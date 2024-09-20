@@ -1,5 +1,5 @@
 ---
-title: "sclet: lightweight Seurat like functions based on SingleCellExperiment"
+title: "sclet: lightweight Seurat like functions for SingleCellExperiment object"
 author: "Guangchuang Yu\\
 
         School of Basic Medical Sciences, Southern Medical University"
