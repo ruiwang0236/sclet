@@ -57,7 +57,7 @@ plot1 + plot2
 
 ## QC
 ```{r}
-subset_feature(sce, 3)
+subset_feature(sce, 10)
 sce <- subset_feature(sce, 3, peek=FALSE)
 
 sce <- subset(sce, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5)
