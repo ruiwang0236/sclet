@@ -9,6 +9,7 @@
 \alias{rowData<-}
 \alias{assay}
 \alias{runPCA}
+\alias{plotColData}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -16,7 +17,7 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{scater}{\code{\link[scater]{runPCA}}}
+  \item{scater}{\code{\link[scater]{plotColData}}, \code{\link[scater]{runPCA}}}
 
   \item{SummarizedExperiment}{\code{\link[SummarizedExperiment:SummarizedExperiment-class]{assay}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{colData}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{colData<-}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{rowData}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{rowData<-}}}
 }}

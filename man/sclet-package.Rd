@@ -5,7 +5,7 @@
 \alias{sclet}
 \alias{sclet-package}
 \alias{package-sclet}
-\title{sclet: Lightweight Seurat-like Functions for SingleCellExperiment Object}
+\title{sclet: A Lightweight Toolkit for Single-Cell Data Analysis}
 \description{
 Help students migrate from Seurat to SingleCellExperiment.
 }

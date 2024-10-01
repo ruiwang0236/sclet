@@ -33,7 +33,7 @@ f <- system.file(package = "sclet", "extdata/pbmc-3k-sce.qs")
 sce <- qs::qread(f)
 ```
 
-## read 10X data
+## Read 10X data
 
 ```{r eval = FALSE}
 library(sclet)
@@ -42,12 +42,23 @@ sce <- Read10X(dir)
 ```
 
 
-## Cell data Visualization
+## QC
 
 ```{r fig.width=10, fig.height=7.5}
-colData(sce)$percent.mt <- PercentageFeatureSet(sce, "^MT-")
+# colData(sce)$percent.mt <- PercentageFeatureSet(sce, "^MT-")
+sce[["percent.mt"]] <- PercentageFeatureSet(sce, "^MT-")
 VlnPlot(sce, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"))
 ```
+
+
+```{r}
+subset_feature(sce, 10)
+sce <- subset_feature(sce, mincell = 3, peek=FALSE)
+
+sce <- subset(sce, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5)
+sce
+```
+
 
 ```{r fig.width=10, fig.height=7.5}
 plot1 <- FeatureScatter(sce, feature1 = "nCount_RNA", feature2 = "percent.mt")
@@ -55,14 +66,18 @@ plot2 <- FeatureScatter(sce, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
 plot1 + plot2
 ```
 
-## QC
-```{r}
-subset_feature(sce, 10)
-sce <- subset_feature(sce, 3, peek=FALSE)
 
-sce <- subset(sce, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5)
-sce
+Users can also use `plotColData()` to visualize the QC data.
+
 ```
+# VlnPlot-like
+plotColData(sce, y = 'nCount_RNA')
+
+# FeatureScatter-like
+plotColData(sce, x = "nCount_RNA", y = "percent.mt")
+```
+
+
 
 ## Variable features
 

@@ -14,10 +14,23 @@ Read10X <- function(data.dir, ...) {
     rownames(sce) <- scuttle::uniquifyFeatureNames(
         rowData(sce)$ID, rowData(sce)$Symbol)
 
-    qc_metrics <- scuttle::perCellQCMetrics(sce)
-    SummarizedExperiment::colData(sce)$nFeature_RNA <- qc_metrics$detected
-    SummarizedExperiment::colData(sce)$nCount_RNA <- qc_metrics$sum
+    sce <- QCMetrics(sce)
+
     return(sce)
+}
+
+#' add QC metrics
+#' 
+#' @title QCMetrics
+#' @param object a 'SingleCellExperiment' object
+#' @return update object with two QC metrics ('nFeature_RNA' and 'nCount_RNA')
+#' @importFrom scuttle perCellQCMetrics
+#' @export
+QCMetrics <- function(object) {
+    qc_metrics <- scuttle::perCellQCMetrics(object)
+    SummarizedExperiment::colData(object)$nFeature_RNA <- qc_metrics$detected
+    SummarizedExperiment::colData(object)$nCount_RNA <- qc_metrics$sum
+    return(object)
 }
 
 #' calculate percentage of genes that matched a pattern
@@ -32,6 +45,7 @@ PercentageFeatureSet <- function(object, pattern = NULL) {
     qc_metrics <- scuttle::perCellQCMetrics(object, subsets = list(pattern=has_pattern))
     return(qc_metrics$subsets_pattern_percent)
 }
+
 
 #' violine plot of selected features
 #' 
@@ -48,11 +62,14 @@ PercentageFeatureSet <- function(object, pattern = NULL) {
 #' @importFrom ggplot2 theme
 VlnPlot <- function(object, features, ncol="auto") {
     pp <- lapply(features, function(y) {
-        scater::plotColData(object, y=y) +
+        ## scater::plotColData(object, y=y) +
+        ggplot(colData(object), aes(x=factor(1), y=.data[[y]])) +
         ggtitle(y) +
         geom_violin(aes(fill=y), color="black") +
         geom_jitter(color='black', size=.1, width=.4) +
-        theme(legend.position="none")
+        theme_classic() + 
+        theme(legend.position="none") +
+        theme(axis.text.x = element_blank())
     })
 
     if (ncol == "auto") ncol <- length(features)
@@ -69,9 +86,11 @@ VlnPlot <- function(object, features, ncol="auto") {
 #' @importFrom ggplot2 geom_point
 #' @export
 FeatureScatter <- function(object, feature1, feature2) {
-    scater::plotColData(object, x=feature1, y=feature2) +
+    # scater::plotColData(object, x=feature1, y=feature2) +
         #scale_x_log10() + 
-        geom_point(color = "red",size=0.5)
+     ggplot(colData(object), aes(x=.data[[feature1]], y=.data[[feature2]])) +
+        geom_point(color = "red",size=0.5) +
+    theme_classic()
 }
 
 #' subset SingleCellExperiment object
