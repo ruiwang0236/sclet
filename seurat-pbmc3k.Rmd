@@ -1,0 +1,131 @@
+---
+title: "sclet: lightweight Seurat like functions for SingleCellExperiment object"
+author: "Guangchuang Yu\\
+
+        School of Basic Medical Sciences, Southern Medical University"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    toc: true
+    theme: cayman
+    highlight: github
+  pdf_document:
+    toc: true
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{sclet introduction}
+  %\usepackage[utf8]{inputenc}
+---
+
+
+
+```{r include=FALSE}
+knitr::opts_chunk$set(warning = FALSE,
+                      message = TRUE)
+
+library(sclet)
+library(aplot)
+library(ggplot2)
+library(ggsc)
+
+
+f <- system.file(package = "sclet", "extdata/pbmc-3k-sce.qs")
+sce <- qs::qread(f)
+```
+
+## Read 10X data
+
+```{r eval = FALSE}
+library(sclet)
+dir <- "filtered_gene_bc_matrices/hg19"
+sce <- Read10X(dir)
+```
+
+
+## QC
+
+```{r fig.width=10, fig.height=7.5}
+# colData(sce)$percent.mt <- PercentageFeatureSet(sce, "^MT-")
+sce[["percent.mt"]] <- PercentageFeatureSet(sce, "^MT-")
+VlnPlot(sce, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"))
+```
+
+
+```{r}
+subset_feature(sce, 10)
+sce <- subset_feature(sce, mincell = 3, peek=FALSE)
+
+sce <- subset(sce, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5)
+sce
+```
+
+
+```{r fig.width=10, fig.height=7.5}
+plot1 <- FeatureScatter(sce, feature1 = "nCount_RNA", feature2 = "percent.mt")
+plot2 <- FeatureScatter(sce, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+plot1 + plot2
+```
+
+
+Users can also use `plotColData()` to visualize the QC data.
+
+```
+# VlnPlot-like
+plotColData(sce, y = 'nCount_RNA')
+
+# FeatureScatter-like
+plotColData(sce, x = "nCount_RNA", y = "percent.mt")
+```
+
+
+
+## Variable features
+
+```{r fig.width=10, fig.height=7.5}
+sce <- NormalizeData(sce)
+sce <- FindVariableFeatures(sce)
+top10 <- head(VariableFeatures(sce), 10)
+top10
+VariableFeaturePlot(sce, label = top10)
+```
+
+## Dimensional reduction
+
+```{r fig.width=10, fig.height=7}
+sce <- ScaleData(sce)
+sce <- runPCA(sce, subset_row = VariableFeatures(sce), exprs_values = "scaled")
+ElbowPlot(sce)
+```
+
+## Clustering
+
+```{r}
+sce <- FindNeighbors(sce, dims = 1:10)
+sce <- FindClusters(sce)
+
+head(Idents(sce), 5)
+```
+
+
+## UMAP
+```{r fig.width = 13, fig.height=7.5}
+sce <- RunUMAP(sce, 1:10)
+
+library(ggsc)
+library(aplot)
+p1 <- sc_dim(sce, reduction="PCA")
+p2 <- sc_dim(sce, reduction="UMAP")
+
+plot_list(gglist = list(PCA=p1, UMAP=p2))
+```
+
+## Cell cluster annotation
+
+```{r}
+new_labels <- c("CD8+ T","B","Memory CD4+","CD14+ Mono",
+    "NK","FCGR3A+ Mono","Native CD4+ T","DC","Platelet")
+sce <- RenameIdents(sce, new_labels)
+sc_dim(sce, reduction="UMAP") + sc_dim_geom_label()
+```
+
+
