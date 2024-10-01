@@ -1,35 +1,10 @@
----
-title: "sclet: lightweight Seurat like functions for SingleCellExperiment object"
-author: "Guangchuang Yu\\
-
-        School of Basic Medical Sciences, Southern Medical University"
-date: "`r Sys.Date()`"
-output:
-  prettydoc::html_pretty:
-    toc: true
-    theme: cayman
-    highlight: github
-  pdf_document:
-    toc: true
-vignette: >
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{sclet introduction}
-  %\usepackage[utf8]{inputenc}
----
-
-
+# Seurat-like functions 
 
 ```{r include=FALSE}
 knitr::opts_chunk$set(warning = FALSE,
                       message = TRUE)
 
-library(sclet)
-library(aplot)
-library(ggplot2)
-library(ggsc)
-
-
-f <- system.file(package = "sclet", "extdata/pbmc-3k-sce.qs")
+f <- "data/pbmc-3k-sce.qs"
 sce <- qs::qread(f)
 ```
 
@@ -37,6 +12,7 @@ sce <- qs::qread(f)
 
 ```{r eval = FALSE}
 library(sclet)
+
 dir <- "filtered_gene_bc_matrices/hg19"
 sce <- Read10X(dir)
 ```
@@ -63,18 +39,21 @@ sce
 ```{r fig.width=10, fig.height=7.5}
 plot1 <- FeatureScatter(sce, feature1 = "nCount_RNA", feature2 = "percent.mt")
 plot2 <- FeatureScatter(sce, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
-plot1 + plot2
+
+library(aplot)
+plot_list(plot1, plot2)
 ```
 
 
 Users can also use `plotColData()` to visualize the QC data.
 
-```
+```{r fig.width=10, fig.height=7.5}
 # VlnPlot-like
-plotColData(sce, y = 'nCount_RNA')
+p1 <- plotColData(sce, y = 'nCount_RNA')
 
 # FeatureScatter-like
-plotColData(sce, x = "nCount_RNA", y = "percent.mt")
+p2 <- plotColData(sce, x = "nCount_RNA", y = "percent.mt")
+plot_list(p1, p2)
 ```
 
 
@@ -100,6 +79,7 @@ ElbowPlot(sce)
 ## Clustering
 
 ```{r}
+set.seed(2024-10-01)
 sce <- FindNeighbors(sce, dims = 1:10)
 sce <- FindClusters(sce)
 
