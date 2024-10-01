@@ -60,6 +60,8 @@ PercentageFeatureSet <- function(object, pattern = NULL) {
 #' @importFrom ggplot2 geom_violin
 #' @importFrom ggplot2 geom_jitter
 #' @importFrom ggplot2 theme
+#' @importFrom ggplot2 theme_classic
+#' @importFrom ggplot2 element_blank
 VlnPlot <- function(object, features, ncol="auto") {
     pp <- lapply(features, function(y) {
         ## scater::plotColData(object, y=y) +
@@ -68,8 +70,11 @@ VlnPlot <- function(object, features, ncol="auto") {
         geom_violin(aes(fill=y), color="black") +
         geom_jitter(color='black', size=.1, width=.4) +
         theme_classic() + 
-        theme(legend.position="none") +
-        theme(axis.text.x = element_blank())
+        theme(legend.position="none",
+            axis.text.x = element_blank(),
+            axis.ticks.x = element_blank()) +
+        xlab(NULL) +
+        ylab(NULL)
     })
 
     if (ncol == "auto") ncol <- length(features)
@@ -93,20 +98,19 @@ FeatureScatter <- function(object, feature1, feature2) {
     theme_classic()
 }
 
-#' subset SingleCellExperiment object
-#' @method subset SingleCellExperiment
+
 #' @importFrom dplyr filter
 #' @importFrom rlang enquo
-#' @param x a SingleCellExperiment object
-#' @param ... additional paramter that will be ignored
-#' @param subset logical expression to subset the object
-#' @export
-subset.SingleCellExperiment <- function(x, subset, ...) {
-    subset <- rlang::enquo(arg = subset)
-    y <- dplyr::filter(as.data.frame(colData(x)), !!subset)
+#' @importFrom methods setMethod
+setMethod("subset", "SingleCellExperiment",
+    function(x, subset, select, ...) {
+        subset <- rlang::enquo(arg = subset)
+        y <- dplyr::filter(as.data.frame(colData(x)), !!subset)
 
-    x[, colData(x)$Barcode %in% y$Barcode]
-}
+        x[, colData(x)$Barcode %in% y$Barcode]                
+    }
+)
+
 
 #' normalize data
 #' 

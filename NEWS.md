@@ -1,5 +1,8 @@
-# sclet 0.0.1.001
+# sclet 0.0.1.002
 
++ remove vignettes and host online book (2024-10-01, Tue)
+    - <https://yulab-smu.top/sclet>
++ re-export `scater::plotColData()` 
 + `QCMetrics()` function to add seurat-like QC metrics ('nFeature_RNA' and 'nCount_RNA' to 'SingleCellExperiment' object)
 
 # sclet 0.0.1
@@ -21,3 +24,8 @@
     - `Idents()`
     - `RenameIdents()`
     - `RunUMAP()`
++ re-export:
+    - `SummarizedExperiment::colData()`
+    - `SummarizedExperiment::rowData()`
+    - `SummarizedExperiment::assay()`
+    - `scater::runPCA()`
