@@ -1,0 +1,32 @@
+Package: sclet
+Title: A Lightweight Toolkit for Single-Cell Data Analysis 
+Version: 0.0.1.002
+Authors@R: c(
+    person(given = "Guangchuang", family = "Yu", email = "guangchuangyu@gmail.com",   role  = c("aut", "cre"), comment = c(ORCID = "0000-0002-6485-8781")),
+    person(given = "Kaijia", family = "Huang", email = "2947569391@qq.com",   role  = "ctb"),
+    person(given = "Nan", family = "He", email = "hinna@i.smu.edu.cn",   role  = "ctb")
+    )
+Description: Help students migrate from Seurat to SingleCellExperiment.
+Imports:
+    aplot,
+    dplyr,
+    ggplot2,
+    ggrepel,
+    igraph,
+    methods,
+    rlang,
+    scater,
+    scran,
+    scuttle,
+    stats,
+    yulab.utils,
+    DropletUtils,
+    SingleCellExperiment,
+    SummarizedExperiment
+Suggests:
+    ggsc,
+    Seurat
+License: Artistic-2.0
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
