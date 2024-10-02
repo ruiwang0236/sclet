@@ -32,6 +32,9 @@
 #' }
 #' @export
 gene_summary_table <- function(gene, gene_col = "gene", keyType = "SYMBOL", cluster_col, output = "html", browse = TRUE) {
+    
+    message(yulab.utils:::pkg_ref("fanyi"))
+
     output <- match.arg(output, c("html", "csv", "pdf", "png", "md", "data.frame"))
 
     gene[[gene_col]] <- sub("\\.\\d", "", gene[[gene_col]])
