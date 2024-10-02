@@ -292,7 +292,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="seurat-like-functions.html#cb20-1" tabindex="-1"></a><span class="co"># find markers for every cluster compared to all remaining cells, </span></span>
 <span id="cb20-2"><a href="seurat-like-functions.html#cb20-2" tabindex="-1"></a><span class="co"># report only the positive ones</span></span>
 <span id="cb20-3"><a href="seurat-like-functions.html#cb20-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb20-4"><a href="seurat-like-functions.html#cb20-4" tabindex="-1"></a>pbmc.markers <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(sce)</span>
+<span id="cb20-4"><a href="seurat-like-functions.html#cb20-4" tabindex="-1"></a>pbmc.markers <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(sce, <span class="at">only.pos =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb20-5"><a href="seurat-like-functions.html#cb20-5" tabindex="-1"></a></span>
 <span id="cb20-6"><a href="seurat-like-functions.html#cb20-6" tabindex="-1"></a>topN_marker <span class="ot">&lt;-</span> <span class="cf">function</span>(markers, n) {</span>
 <span id="cb20-7"><a href="seurat-like-functions.html#cb20-7" tabindex="-1"></a>    markers <span class="sc">%&gt;%</span></span>
