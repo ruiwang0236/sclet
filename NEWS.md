@@ -1,3 +1,7 @@
+# sclet 0.0.2.001
+
++ `gene_summary_table()` to add gene summary information to marker gene table (2024-10-02, Wed)
+
 # sclet 0.0.2
 
 + `FindMarkers()` and `FindAllMarkers()` (2024-10-02, Wed)

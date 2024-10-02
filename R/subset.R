@@ -1,3 +1,16 @@
+#' @importFrom dplyr filter
+#' @importFrom rlang enquo
+#' @importFrom methods setMethod
+setMethod("subset", "SingleCellExperiment",
+    function(x, subset, select, ...) {
+        subset <- rlang::enquo(arg = subset)
+        y <- dplyr::filter(as.data.frame(colData(x)), !!subset)
+
+        x[, colData(x)$Barcode %in% y$Barcode]                
+    }
+)
+
+
 #' @title subset_feature
 #' @rdname subset-feature
 #' @param x Seurat object

@@ -99,18 +99,6 @@ FeatureScatter <- function(object, feature1, feature2) {
 }
 
 
-#' @importFrom dplyr filter
-#' @importFrom rlang enquo
-#' @importFrom methods setMethod
-setMethod("subset", "SingleCellExperiment",
-    function(x, subset, select, ...) {
-        subset <- rlang::enquo(arg = subset)
-        y <- dplyr::filter(as.data.frame(colData(x)), !!subset)
-
-        x[, colData(x)$Barcode %in% y$Barcode]                
-    }
-)
-
 
 #' normalize data
 #' 
@@ -525,17 +513,5 @@ FindMarkers_Presto <- function(object, ident.1 = NULL, ident.2 = NULL, clusters,
     combined_results$feature <- NULL
     return(combined_results)
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
