@@ -117,7 +117,7 @@ head(cluster5.markers, n = 5)
 # find markers for every cluster compared to all remaining cells, 
 # report only the positive ones
 library(dplyr)
-pbmc.markers <- FindAllMarkers(sce)
+pbmc.markers <- FindAllMarkers(sce, only.pos = TRUE)
 
 topN_marker <- function(markers, n) {
     markers %>%
