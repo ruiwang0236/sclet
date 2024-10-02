@@ -1,5 +1,6 @@
-# sclet 0.0.1.002
+# sclet 0.0.2
 
++ `FindMarkers()` and `FindAllMarkers()` (2024-10-02, Wed)
 + remove vignettes and host online book (2024-10-01, Tue)
     - <https://yulab-smu.top/sclet>
 + re-export `scater::plotColData()` 
