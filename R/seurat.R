@@ -402,10 +402,12 @@ FindAllMarkers <- function(
         markers <- markers[markers$pval < return.thresh, ]
         
         if (only.pos) {
-            i <- grep("avg_log", names(markers))
-            markers <- markers[markers[ ,i] > 0, ] }  
-            markers_list[[i]] <- markers
-        }
+            j <- grep("avg_log", names(markers))
+            markers <- markers[markers[ ,j] > 0, ] 
+        }  
+        
+        markers_list[[i]] <- markers
+    }
 
     combined_markers <- yulab.utils::rbindlist(markers_list)
     
@@ -496,7 +498,7 @@ FindMarkers_Presto <- function(object, ident.1 = NULL, ident.2 = NULL, clusters,
     if (!is.installed("presto")) {
         install_zip_gh("immunogenomics/presto")
     }
-    
+
     wilcoxauc <- get_fun_from_pkg("presto", "wilcoxauc")
     results <- wilcoxauc(data_subset, group_labels)
     
