@@ -22,7 +22,7 @@
 
 
 
-<meta name="date" content="2024-10-01" />
+<meta name="date" content="2024-10-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -144,7 +144,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.4" data-path="seurat-like-functions.html"><a href="seurat-like-functions.html#dimensional-reduction"><i class="fa fa-check"></i><b>1.4</b> Dimensional reduction</a></li>
 <li class="chapter" data-level="1.5" data-path="seurat-like-functions.html"><a href="seurat-like-functions.html#clustering"><i class="fa fa-check"></i><b>1.5</b> Clustering</a></li>
 <li class="chapter" data-level="1.6" data-path="seurat-like-functions.html"><a href="seurat-like-functions.html#umap"><i class="fa fa-check"></i><b>1.6</b> UMAP</a></li>
-<li class="chapter" data-level="1.7" data-path="seurat-like-functions.html"><a href="seurat-like-functions.html#cell-cluster-annotation"><i class="fa fa-check"></i><b>1.7</b> Cell cluster annotation</a></li>
+<li class="chapter" data-level="1.7" data-path="seurat-like-functions.html"><a href="seurat-like-functions.html#find-markers"><i class="fa fa-check"></i><b>1.7</b> Find Markers</a></li>
+<li class="chapter" data-level="1.8" data-path="seurat-like-functions.html"><a href="seurat-like-functions.html#cell-cluster-annotation"><i class="fa fa-check"></i><b>1.8</b> Cell cluster annotation</a></li>
 </ul></li>
 </ul>
 
@@ -265,13 +266,57 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb15-8"><a href="seurat-like-functions.html#cb15-8" tabindex="-1"></a><span class="fu">plot_list</span>(<span class="at">gglist =</span> <span class="fu">list</span>(<span class="at">PCA=</span>p1, <span class="at">UMAP=</span>p2))</span></code></pre></div>
 <p><img src="sclet_files/figure-html/unnamed-chunk-11-1.png" width="1248" /></p>
 </div>
-<div id="cell-cluster-annotation" class="section level2 hasAnchor" number="1.7">
-<h2><span class="header-section-number">1.7</span> Cell cluster annotation<a href="seurat-like-functions.html#cell-cluster-annotation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="seurat-like-functions.html#cb16-1" tabindex="-1"></a>new_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;CD8+ T&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;Memory CD4+&quot;</span>,<span class="st">&quot;CD14+ Mono&quot;</span>,</span>
-<span id="cb16-2"><a href="seurat-like-functions.html#cb16-2" tabindex="-1"></a>    <span class="st">&quot;NK&quot;</span>,<span class="st">&quot;FCGR3A+ Mono&quot;</span>,<span class="st">&quot;Native CD4+ T&quot;</span>,<span class="st">&quot;DC&quot;</span>,<span class="st">&quot;Platelet&quot;</span>)</span>
-<span id="cb16-3"><a href="seurat-like-functions.html#cb16-3" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">RenameIdents</span>(sce, new_labels)</span>
-<span id="cb16-4"><a href="seurat-like-functions.html#cb16-4" tabindex="-1"></a><span class="fu">sc_dim</span>(sce, <span class="at">reduction=</span><span class="st">&quot;UMAP&quot;</span>) <span class="sc">+</span> <span class="fu">sc_dim_geom_label</span>()</span></code></pre></div>
-<p><img src="sclet_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<div id="find-markers" class="section level2 hasAnchor" number="1.7">
+<h2><span class="header-section-number">1.7</span> Find Markers<a href="seurat-like-functions.html#find-markers" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="seurat-like-functions.html#cb16-1" tabindex="-1"></a><span class="co"># find all markers of cluster 2</span></span>
+<span id="cb16-2"><a href="seurat-like-functions.html#cb16-2" tabindex="-1"></a>cluster2.markers <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(sce, <span class="at">ident.1 =</span> <span class="dv">2</span>)</span>
+<span id="cb16-3"><a href="seurat-like-functions.html#cb16-3" tabindex="-1"></a><span class="fu">head</span>(cluster2.markers, <span class="at">n =</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>##                   pval         padj avg_log2FC pct.1 pct.2
+## CD79A    5.305484e-102 7.275940e-98   68.33509     1 0.052
+## CD74      1.995011e-87 1.367979e-83 -106.95385     1 0.787
+## CD79B     2.013334e-85 9.203619e-82   54.24136     1 0.141
+## MS4A1     1.920813e-84 6.585508e-81   46.48265     1 0.062
+## HLA-DQA1  2.199464e-82 6.032690e-79   10.08589     1 0.098</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="seurat-like-functions.html#cb18-1" tabindex="-1"></a><span class="co"># find all markers distinguishing cluster 5 from clusters 0 and 3</span></span>
+<span id="cb18-2"><a href="seurat-like-functions.html#cb18-2" tabindex="-1"></a>cluster5.markers <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(sce, <span class="at">ident.1 =</span> <span class="dv">5</span>, <span class="at">ident.2 =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3</span>))</span>
+<span id="cb18-3"><a href="seurat-like-functions.html#cb18-3" tabindex="-1"></a><span class="fu">head</span>(cluster5.markers, <span class="at">n =</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>##              pval         padj avg_log2FC pct.1 pct.2
+## GZMB 4.691392e-80 6.433775e-76  156.62778     1 0.040
+## NKG7 3.980428e-78 2.729380e-74  100.09227     1 0.172
+## GNLY 5.141676e-77 2.350431e-73  111.81262     1 0.120
+## PRF1 3.439975e-72 1.179396e-68   65.89194     1 0.091
+## CST7 2.280830e-69 6.255860e-66   54.83849     1 0.135</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="seurat-like-functions.html#cb20-1" tabindex="-1"></a><span class="co"># find markers for every cluster compared to all remaining cells, </span></span>
+<span id="cb20-2"><a href="seurat-like-functions.html#cb20-2" tabindex="-1"></a><span class="co"># report only the positive ones</span></span>
+<span id="cb20-3"><a href="seurat-like-functions.html#cb20-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb20-4"><a href="seurat-like-functions.html#cb20-4" tabindex="-1"></a>pbmc.markers <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(sce, <span class="at">only.pos =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-5"><a href="seurat-like-functions.html#cb20-5" tabindex="-1"></a>pbmc.markers <span class="sc">%&gt;%</span></span>
+<span id="cb20-6"><a href="seurat-like-functions.html#cb20-6" tabindex="-1"></a>    <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
+<span id="cb20-7"><a href="seurat-like-functions.html#cb20-7" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(avg_log2FC <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-8"><a href="seurat-like-functions.html#cb20-8" tabindex="-1"></a>    <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-9"><a href="seurat-like-functions.html#cb20-9" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="ot">-&gt;</span> top10</span>
+<span id="cb20-10"><a href="seurat-like-functions.html#cb20-10" tabindex="-1"></a>top10    </span></code></pre></div>
+<pre><code>## # A tibble: 10 × 7
+##        pval     padj avg_log2FC pct.1 pct.2 cluster gene    
+##       &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   
+##  1 3.55e-72 4.87e-68       92.8     1 0.003 9       PF4     
+##  2 2.78e-71 1.91e-67       27.9     1 0     9       GP9     
+##  3 1.65e-65 7.52e-62       11.8     1 0.003 9       ITGA2B  
+##  4 8.70e-65 2.98e-61       11.3     1 0     9       AP00118…
+##  5 1.74e-59 3.97e-56       35.2     1 0.012 9       GNG11   
+##  6 1.74e-59 3.97e-56       64.6     1 0.012 9       SDPR    
+##  7 2.53e-58 4.96e-55       42.3     1 0     9       TMEM40  
+##  8 8.70e-57 1.49e-53       48.4     1 0.009 9       TUBB1   
+##  9 3.80e-56 5.79e-53       14.5     1 0.015 9       SPARC   
+## 10 1.10e-52 1.51e-49       48.1     1 0.003 9       PTCRA</code></pre>
+</div>
+<div id="cell-cluster-annotation" class="section level2 hasAnchor" number="1.8">
+<h2><span class="header-section-number">1.8</span> Cell cluster annotation<a href="seurat-like-functions.html#cell-cluster-annotation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="seurat-like-functions.html#cb22-1" tabindex="-1"></a>new_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;CD8+ T&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;Memory CD4+&quot;</span>,<span class="st">&quot;CD14+ Mono&quot;</span>,</span>
+<span id="cb22-2"><a href="seurat-like-functions.html#cb22-2" tabindex="-1"></a>    <span class="st">&quot;NK&quot;</span>,<span class="st">&quot;FCGR3A+ Mono&quot;</span>,<span class="st">&quot;Native CD4+ T&quot;</span>,<span class="st">&quot;DC&quot;</span>,<span class="st">&quot;Platelet&quot;</span>)</span>
+<span id="cb22-3"><a href="seurat-like-functions.html#cb22-3" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">RenameIdents</span>(sce, new_labels)</span>
+<span id="cb22-4"><a href="seurat-like-functions.html#cb22-4" tabindex="-1"></a><span class="fu">sc_dim</span>(sce, <span class="at">reduction=</span><span class="st">&quot;UMAP&quot;</span>) <span class="sc">+</span> <span class="fu">sc_dim_geom_label</span>()</span></code></pre></div>
+<p><img src="sclet_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 
 </div>
 </div>
