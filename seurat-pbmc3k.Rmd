@@ -20,7 +20,7 @@ sce <- Read10X(dir)
 
 ## QC
 
-```{r fig.width=10, fig.height=7.5}
+```{r vlnplot-qc, fig.width=10, fig.height=7.5}
 # colData(sce)$percent.mt <- PercentageFeatureSet(sce, "^MT-")
 sce[["percent.mt"]] <- PercentageFeatureSet(sce, "^MT-")
 VlnPlot(sce, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"))
@@ -36,7 +36,7 @@ sce
 ```
 
 
-```{r fig.width=10, fig.height=7.5}
+```{r featurescatter-qc, fig.width=10, fig.height=7.5}
 plot1 <- FeatureScatter(sce, feature1 = "nCount_RNA", feature2 = "percent.mt")
 plot2 <- FeatureScatter(sce, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
 
@@ -47,7 +47,7 @@ plot_list(plot1, plot2)
 
 Users can also use `plotColData()` to visualize the QC data.
 
-```{r fig.width=10, fig.height=7.5}
+```{r plotcoldata-qc, fig.width=10, fig.height=7.5}
 # VlnPlot-like
 p1 <- plotColData(sce, y = 'nCount_RNA')
 
@@ -60,7 +60,7 @@ plot_list(p1, p2)
 
 ## Variable features
 
-```{r fig.width=10, fig.height=7.5}
+```{r variablefeatureplot-pbmc, fig.width=10, fig.height=7.5}
 sce <- NormalizeData(sce)
 sce <- FindVariableFeatures(sce)
 top10 <- head(VariableFeatures(sce), 10)
@@ -70,7 +70,7 @@ VariableFeaturePlot(sce, label = top10)
 
 ## Dimensional reduction
 
-```{r fig.width=10, fig.height=7}
+```{r elbowplot-pbmc, fig.width=10, fig.height=7}
 sce <- ScaleData(sce)
 sce <- runPCA(sce, subset_row = VariableFeatures(sce), exprs_values = "scaled")
 ElbowPlot(sce)
@@ -88,7 +88,7 @@ head(Idents(sce), 5)
 
 
 ## UMAP
-```{r fig.width = 13, fig.height=7.5}
+```{r umap-pbmc, fig.width = 13, fig.height=7.5}
 sce <- RunUMAP(sce, 1:10)
 
 library(ggsc)
@@ -117,18 +117,36 @@ head(cluster5.markers, n = 5)
 # find markers for every cluster compared to all remaining cells, 
 # report only the positive ones
 library(dplyr)
-pbmc.markers <- FindAllMarkers(sce, only.pos = TRUE)
-pbmc.markers %>%
-    group_by(cluster) %>%
-    dplyr::filter(avg_log2FC > 1) %>%
-    slice_head(n = 10) %>%
-    ungroup() -> top10
-top10    
+pbmc.markers <- FindAllMarkers(sce)
+
+topN_marker <- function(markers, n) {
+    markers %>%
+        group_by(cluster) %>%
+        dplyr::filter(avg_log2FC > 1) %>%
+        slice_head(n = n) %>%
+        ungroup()
+}
+
+top10 <- topN_marker(pbmc.markers, 10)
+split(top10$gene, top10$cluster)
 ```
+
+### Marker gene information
+
+```{r}
+top1 <- topN_marker(pbmc.markers, 1)
+
+gene_table <- gene_summary_table(top1, gene_col = 'gene', 
+    cluster_col = 'cluster', keyType='SYMBOL', output = "data.frame")
+
+gene_table
+```
+
+![](figures/marker_gene_summary.png)
 
 ## Cell cluster annotation
 
-```{r}
+```{r umap-pbmc-cell}
 new_labels <- c("CD8+ T","B","Memory CD4+","CD14+ Mono",
     "NK","FCGR3A+ Mono","Native CD4+ T","DC","Platelet")
 sce <- RenameIdents(sce, new_labels)
