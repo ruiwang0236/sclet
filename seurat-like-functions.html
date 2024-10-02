@@ -144,7 +144,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.4" data-path="seurat-like-functions.html"><a href="seurat-like-functions.html#dimensional-reduction"><i class="fa fa-check"></i><b>1.4</b> Dimensional reduction</a></li>
 <li class="chapter" data-level="1.5" data-path="seurat-like-functions.html"><a href="seurat-like-functions.html#clustering"><i class="fa fa-check"></i><b>1.5</b> Clustering</a></li>
 <li class="chapter" data-level="1.6" data-path="seurat-like-functions.html"><a href="seurat-like-functions.html#umap"><i class="fa fa-check"></i><b>1.6</b> UMAP</a></li>
-<li class="chapter" data-level="1.7" data-path="seurat-like-functions.html"><a href="seurat-like-functions.html#find-markers"><i class="fa fa-check"></i><b>1.7</b> Find Markers</a></li>
+<li class="chapter" data-level="1.7" data-path="seurat-like-functions.html"><a href="seurat-like-functions.html#find-markers"><i class="fa fa-check"></i><b>1.7</b> Find Markers</a>
+<ul>
+<li class="chapter" data-level="1.7.1" data-path="seurat-like-functions.html"><a href="seurat-like-functions.html#marker-gene-information"><i class="fa fa-check"></i><b>1.7.1</b> Marker gene information</a></li>
+</ul></li>
 <li class="chapter" data-level="1.8" data-path="seurat-like-functions.html"><a href="seurat-like-functions.html#cell-cluster-annotation"><i class="fa fa-check"></i><b>1.8</b> Cell cluster annotation</a></li>
 </ul></li>
 </ul>
@@ -178,7 +181,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="seurat-like-functions.html#cb2-1" tabindex="-1"></a><span class="co"># colData(sce)$percent.mt &lt;- PercentageFeatureSet(sce, &quot;^MT-&quot;)</span></span>
 <span id="cb2-2"><a href="seurat-like-functions.html#cb2-2" tabindex="-1"></a>sce[[<span class="st">&quot;percent.mt&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">PercentageFeatureSet</span>(sce, <span class="st">&quot;^MT-&quot;</span>)</span>
 <span id="cb2-3"><a href="seurat-like-functions.html#cb2-3" tabindex="-1"></a><span class="fu">VlnPlot</span>(sce, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>))</span></code></pre></div>
-<p><img src="sclet_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
+<p><img src="sclet_files/figure-html/vlnplot-qc-1.png" width="960" /></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="seurat-like-functions.html#cb3-1" tabindex="-1"></a><span class="fu">subset_feature</span>(sce, <span class="dv">10</span>)</span></code></pre></div>
 <pre><code>## ************************************************** &gt;=0 | 32738 (100%)
 ## ************************* &gt;=1 | 16634 (51%)
@@ -213,7 +216,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-3"><a href="seurat-like-functions.html#cb7-3" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="seurat-like-functions.html#cb7-4" tabindex="-1"></a><span class="fu">library</span>(aplot)</span>
 <span id="cb7-5"><a href="seurat-like-functions.html#cb7-5" tabindex="-1"></a><span class="fu">plot_list</span>(plot1, plot2)</span></code></pre></div>
-<p><img src="sclet_files/figure-html/unnamed-chunk-6-1.png" width="960" /></p>
+<p><img src="sclet_files/figure-html/featurescatter-qc-1.png" width="960" /></p>
 <p>Users can also use <code>plotColData()</code> to visualize the QC data.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="seurat-like-functions.html#cb8-1" tabindex="-1"></a><span class="co"># VlnPlot-like</span></span>
 <span id="cb8-2"><a href="seurat-like-functions.html#cb8-2" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">plotColData</span>(sce, <span class="at">y =</span> <span class="st">&#39;nCount_RNA&#39;</span>)</span>
@@ -221,7 +224,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-4"><a href="seurat-like-functions.html#cb8-4" tabindex="-1"></a><span class="co"># FeatureScatter-like</span></span>
 <span id="cb8-5"><a href="seurat-like-functions.html#cb8-5" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">plotColData</span>(sce, <span class="at">x =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="at">y =</span> <span class="st">&quot;percent.mt&quot;</span>)</span>
 <span id="cb8-6"><a href="seurat-like-functions.html#cb8-6" tabindex="-1"></a><span class="fu">plot_list</span>(p1, p2)</span></code></pre></div>
-<p><img src="sclet_files/figure-html/unnamed-chunk-7-1.png" width="960" /></p>
+<p><img src="sclet_files/figure-html/plotcoldata-qc-1.png" width="960" /></p>
 </div>
 <div id="variable-features" class="section level2 hasAnchor" number="1.3">
 <h2><span class="header-section-number">1.3</span> Variable features<a href="seurat-like-functions.html#variable-features" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -232,14 +235,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>##  [1] &quot;PPBP&quot;   &quot;LYZ&quot;    &quot;S100A9&quot; &quot;IGLL5&quot;  &quot;GNLY&quot;   &quot;FTL&quot;   
 ##  [7] &quot;PF4&quot;    &quot;FTH1&quot;   &quot;GNG11&quot;  &quot;S100A8&quot;</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="seurat-like-functions.html#cb11-1" tabindex="-1"></a><span class="fu">VariableFeaturePlot</span>(sce, <span class="at">label =</span> top10)</span></code></pre></div>
-<p><img src="sclet_files/figure-html/unnamed-chunk-8-1.png" width="960" /></p>
+<p><img src="sclet_files/figure-html/variablefeatureplot-pbmc-1.png" width="960" /></p>
 </div>
 <div id="dimensional-reduction" class="section level2 hasAnchor" number="1.4">
 <h2><span class="header-section-number">1.4</span> Dimensional reduction<a href="seurat-like-functions.html#dimensional-reduction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="seurat-like-functions.html#cb12-1" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(sce)</span>
 <span id="cb12-2"><a href="seurat-like-functions.html#cb12-2" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">runPCA</span>(sce, <span class="at">subset_row =</span> <span class="fu">VariableFeatures</span>(sce), <span class="at">exprs_values =</span> <span class="st">&quot;scaled&quot;</span>)</span>
 <span id="cb12-3"><a href="seurat-like-functions.html#cb12-3" tabindex="-1"></a><span class="fu">ElbowPlot</span>(sce)</span></code></pre></div>
-<p><img src="sclet_files/figure-html/unnamed-chunk-9-1.png" width="960" /></p>
+<p><img src="sclet_files/figure-html/elbowplot-pbmc-1.png" width="960" /></p>
 </div>
 <div id="clustering" class="section level2 hasAnchor" number="1.5">
 <h2><span class="header-section-number">1.5</span> Clustering<a href="seurat-like-functions.html#clustering" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -264,7 +267,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb15-6"><a href="seurat-like-functions.html#cb15-6" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">sc_dim</span>(sce, <span class="at">reduction=</span><span class="st">&quot;UMAP&quot;</span>)</span>
 <span id="cb15-7"><a href="seurat-like-functions.html#cb15-7" tabindex="-1"></a></span>
 <span id="cb15-8"><a href="seurat-like-functions.html#cb15-8" tabindex="-1"></a><span class="fu">plot_list</span>(<span class="at">gglist =</span> <span class="fu">list</span>(<span class="at">PCA=</span>p1, <span class="at">UMAP=</span>p2))</span></code></pre></div>
-<p><img src="sclet_files/figure-html/unnamed-chunk-11-1.png" width="1248" /></p>
+<p><img src="sclet_files/figure-html/umap-pbmc-1.png" width="1248" /></p>
 </div>
 <div id="find-markers" class="section level2 hasAnchor" number="1.7">
 <h2><span class="header-section-number">1.7</span> Find Markers<a href="seurat-like-functions.html#find-markers" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -289,34 +292,115 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="seurat-like-functions.html#cb20-1" tabindex="-1"></a><span class="co"># find markers for every cluster compared to all remaining cells, </span></span>
 <span id="cb20-2"><a href="seurat-like-functions.html#cb20-2" tabindex="-1"></a><span class="co"># report only the positive ones</span></span>
 <span id="cb20-3"><a href="seurat-like-functions.html#cb20-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb20-4"><a href="seurat-like-functions.html#cb20-4" tabindex="-1"></a>pbmc.markers <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(sce, <span class="at">only.pos =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb20-5"><a href="seurat-like-functions.html#cb20-5" tabindex="-1"></a>pbmc.markers <span class="sc">%&gt;%</span></span>
-<span id="cb20-6"><a href="seurat-like-functions.html#cb20-6" tabindex="-1"></a>    <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
-<span id="cb20-7"><a href="seurat-like-functions.html#cb20-7" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(avg_log2FC <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb20-8"><a href="seurat-like-functions.html#cb20-8" tabindex="-1"></a>    <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb20-9"><a href="seurat-like-functions.html#cb20-9" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="ot">-&gt;</span> top10</span>
-<span id="cb20-10"><a href="seurat-like-functions.html#cb20-10" tabindex="-1"></a>top10    </span></code></pre></div>
-<pre><code>## # A tibble: 10 × 7
-##        pval     padj avg_log2FC pct.1 pct.2 cluster gene    
-##       &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   
-##  1 3.55e-72 4.87e-68       92.8     1 0.003 9       PF4     
-##  2 2.78e-71 1.91e-67       27.9     1 0     9       GP9     
-##  3 1.65e-65 7.52e-62       11.8     1 0.003 9       ITGA2B  
-##  4 8.70e-65 2.98e-61       11.3     1 0     9       AP00118…
-##  5 1.74e-59 3.97e-56       35.2     1 0.012 9       GNG11   
-##  6 1.74e-59 3.97e-56       64.6     1 0.012 9       SDPR    
-##  7 2.53e-58 4.96e-55       42.3     1 0     9       TMEM40  
-##  8 8.70e-57 1.49e-53       48.4     1 0.009 9       TUBB1   
-##  9 3.80e-56 5.79e-53       14.5     1 0.015 9       SPARC   
-## 10 1.10e-52 1.51e-49       48.1     1 0.003 9       PTCRA</code></pre>
+<span id="cb20-4"><a href="seurat-like-functions.html#cb20-4" tabindex="-1"></a>pbmc.markers <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(sce)</span>
+<span id="cb20-5"><a href="seurat-like-functions.html#cb20-5" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="seurat-like-functions.html#cb20-6" tabindex="-1"></a>topN_marker <span class="ot">&lt;-</span> <span class="cf">function</span>(markers, n) {</span>
+<span id="cb20-7"><a href="seurat-like-functions.html#cb20-7" tabindex="-1"></a>    markers <span class="sc">%&gt;%</span></span>
+<span id="cb20-8"><a href="seurat-like-functions.html#cb20-8" tabindex="-1"></a>        <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
+<span id="cb20-9"><a href="seurat-like-functions.html#cb20-9" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">filter</span>(avg_log2FC <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-10"><a href="seurat-like-functions.html#cb20-10" tabindex="-1"></a>        <span class="fu">slice_head</span>(<span class="at">n =</span> n) <span class="sc">%&gt;%</span></span>
+<span id="cb20-11"><a href="seurat-like-functions.html#cb20-11" tabindex="-1"></a>        <span class="fu">ungroup</span>()</span>
+<span id="cb20-12"><a href="seurat-like-functions.html#cb20-12" tabindex="-1"></a>}</span>
+<span id="cb20-13"><a href="seurat-like-functions.html#cb20-13" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="seurat-like-functions.html#cb20-14" tabindex="-1"></a>top10 <span class="ot">&lt;-</span> <span class="fu">topN_marker</span>(pbmc.markers, <span class="dv">10</span>)</span>
+<span id="cb20-15"><a href="seurat-like-functions.html#cb20-15" tabindex="-1"></a><span class="fu">split</span>(top10<span class="sc">$</span>gene, top10<span class="sc">$</span>cluster)</span></code></pre></div>
+<pre><code>## $`1`
+##  [1] &quot;CCL5&quot;     &quot;NKG7&quot;     &quot;GZMK&quot;     &quot;CST7&quot;     &quot;CTSW&quot;    
+##  [6] &quot;IL32&quot;     &quot;TMSB10&quot;   &quot;CD8A&quot;     &quot;C1orf162&quot; &quot;KLRG1&quot;   
+## 
+## $`2`
+##  [1] &quot;CD79A&quot;     &quot;CD79B&quot;     &quot;MS4A1&quot;     &quot;HLA-DQA1&quot; 
+##  [5] &quot;HLA-DQB1&quot;  &quot;TCL1A&quot;     &quot;LINC00926&quot; &quot;VPREB3&quot;   
+##  [9] &quot;SRGN&quot;      &quot;HLA-DQA2&quot; 
+## 
+## $`3`
+##  [1] &quot;LTB&quot;   &quot;LDHB&quot;  &quot;IL32&quot;  &quot;IL7R&quot;  &quot;CD3D&quot;  &quot;RPS3&quot;  &quot;RPS25&quot;
+##  [8] &quot;RPS27&quot; &quot;RPS12&quot; &quot;RPS18&quot;
+## 
+## $`4`
+##  [1] &quot;S100A9&quot; &quot;S100A8&quot; &quot;LYZ&quot;    &quot;LGALS2&quot; &quot;FCN1&quot;   &quot;TYROBP&quot;
+##  [7] &quot;CST3&quot;   &quot;FTL&quot;    &quot;FTH1&quot;   &quot;GPX1&quot;  
+## 
+## $`5`
+##  [1] &quot;GZMB&quot;   &quot;GNLY&quot;   &quot;NKG7&quot;   &quot;PRF1&quot;   &quot;FGFBP2&quot; &quot;GZMA&quot;  
+##  [7] &quot;CST7&quot;   &quot;CTSW&quot;   &quot;SPON2&quot;  &quot;CD247&quot; 
+## 
+## $`6`
+##  [1] &quot;FCGR3A&quot;        &quot;LST1&quot;          &quot;FCER1G&quot;       
+##  [4] &quot;IFITM3&quot;        &quot;SERPINA1&quot;      &quot;COTL1&quot;        
+##  [7] &quot;RP11-290F20.3&quot; &quot;MS4A7&quot;         &quot;IFITM2&quot;       
+## [10] &quot;FTL&quot;          
+## 
+## $`7`
+##  [1] &quot;RPS27&quot;    &quot;MALAT1&quot;   &quot;RPL32&quot;    &quot;RPL9&quot;     &quot;SH3BGRL3&quot;
+##  [6] &quot;RPS25&quot;    &quot;RPL30&quot;    &quot;RPS12&quot;    &quot;RPL21&quot;    &quot;RPS13&quot;   
+## 
+## $`8`
+##  [1] &quot;FCER1A&quot;   &quot;ENHO&quot;     &quot;PHACTR1&quot;  &quot;CLEC10A&quot;  &quot;CD1C&quot;    
+##  [6] &quot;SERPINF1&quot; &quot;CLIC2&quot;    &quot;HLA-DQA2&quot; &quot;GSN&quot;      &quot;NDRG2&quot;   
+## 
+## $`9`
+##  [1] &quot;PF4&quot;        &quot;GP9&quot;        &quot;ITGA2B&quot;     &quot;AP001189.4&quot;
+##  [5] &quot;GNG11&quot;      &quot;SDPR&quot;       &quot;TMEM40&quot;     &quot;TUBB1&quot;     
+##  [9] &quot;SPARC&quot;      &quot;PTCRA&quot;</code></pre>
+<div id="marker-gene-information" class="section level3 hasAnchor" number="1.7.1">
+<h3><span class="header-section-number">1.7.1</span> Marker gene information<a href="seurat-like-functions.html#marker-gene-information" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="seurat-like-functions.html#cb22-1" tabindex="-1"></a>top1 <span class="ot">&lt;-</span> <span class="fu">topN_marker</span>(pbmc.markers, <span class="dv">1</span>)</span>
+<span id="cb22-2"><a href="seurat-like-functions.html#cb22-2" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="seurat-like-functions.html#cb22-3" tabindex="-1"></a>gene_table <span class="ot">&lt;-</span> <span class="fu">gene_summary_table</span>(top1, <span class="at">gene_col =</span> <span class="st">&#39;gene&#39;</span>, </span>
+<span id="cb22-4"><a href="seurat-like-functions.html#cb22-4" tabindex="-1"></a>    <span class="at">cluster_col =</span> <span class="st">&#39;cluster&#39;</span>, <span class="at">keyType=</span><span class="st">&#39;SYMBOL&#39;</span>, <span class="at">output =</span> <span class="st">&quot;data.frame&quot;</span>)</span>
+<span id="cb22-5"><a href="seurat-like-functions.html#cb22-5" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="seurat-like-functions.html#cb22-6" tabindex="-1"></a>gene_table</span></code></pre></div>
+<pre><code>##   ENTREZID   gene          pval          padj avg_log2FC
+## 1     2205 FCER1A  1.512234e-51  2.073878e-47   66.02055
+## 2     2214 FCGR3A  8.939859e-77  1.226012e-72   26.60405
+## 3     3002   GZMB  4.753779e-82  6.519332e-78  148.98625
+## 4     4050    LTB  2.222889e-52  3.048470e-48   59.65963
+## 5     5196    PF4  3.554569e-72  4.874736e-68   92.82031
+## 6     6232  RPS27  4.326148e-45  8.475542e-42   10.60607
+## 7     6280 S100A9 6.246079e-116 8.565872e-112  226.06146
+## 8     6352   CCL5  4.316148e-98  5.919165e-94   67.29457
+## 9      973  CD79A 5.305484e-102  7.275940e-98   68.33509
+##   pct.1 pct.2 cluster   name
+## 1     1 0.012       8 FCER1A
+## 2     1 0.143       6 FCGR3A
+## 3     1 0.073       5   GZMB
+## 4     1 0.651       3    LTB
+## 5     1 0.003       9    PF4
+## 6     1 0.996       7  RPS27
+## 7     1 0.205       4 S100A9
+## 8     1 0.224       1   CCL5
+## 9     1 0.052       2  CD79A
+##                       description
+## 1          Fc epsilon receptor Ia
+## 2          Fc gamma receptor IIIa
+## 3                      granzyme B
+## 4                lymphotoxin beta
+## 5               platelet factor 4
+## 6           ribosomal protein S27
+## 7 S100 calcium binding protein A9
+## 8    C-C motif chemokine ligand 5
+## 9                  CD79a molecule
+##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             summary
+## 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        The immunoglobulin epsilon receptor (IgE receptor) is the initiator of the allergic response. When two or more high-affinity IgE receptors are brought together by allergen-bound IgE molecules, mediators such as histamine that are responsible for allergy symptoms are released. This receptor is comprised of an alpha subunit, a beta subunit, and two gamma subunits. The protein encoded by this gene represents the alpha subunit. [provided by RefSeq, Aug 2011]
+## 2 This gene encodes a receptor for the Fc portion of immunoglobulin G, and it is involved in the removal of antigen-antibody complexes from the circulation, as well as other responses, including antibody dependent cellular mediated cytotoxicity and antibody dependent enhancement of virus infections. This gene (FCGR3A) is highly similar to another nearby gene (FCGR3B) located on chromosome 1. The receptor encoded by this gene is expressed on natural killer (NK) cells as an integral membrane glycoprotein anchored through a transmembrane peptide, whereas FCGR3B is expressed on polymorphonuclear neutrophils (PMN) where the receptor is anchored through a phosphatidylinositol (PI) linkage. Mutations in this gene are associated with immunodeficiency 20, and have been linked to susceptibility to recurrent viral infections, susceptibility to systemic lupus erythematosus, and alloimmune neonatal neutropenia. Alternatively spliced transcript variants encoding different isoforms have been found for this gene. [provided by RefSeq, Aug 2020]
+## 3                                                                                                                                                                                                                                                                                                                                                                                                                                                                      This gene encodes a member of the granzyme subfamily of proteins, part of the peptidase S1 family of serine proteases. The encoded preproprotein is secreted by natural killer (NK) cells and cytotoxic T lymphocytes (CTLs) and proteolytically processed to generate the active protease, which induces target cell apoptosis. This protein also processes cytokines and degrades extracellular matrix proteins, and these roles are implicated in chronic inflammation and wound healing. Expression of this gene may be elevated in human patients with cardiac fibrosis. [provided by RefSeq, Sep 2016]
+## 4                                                                                                                                                                                                                                                               Lymphotoxin beta is a type II membrane protein of the TNF family. It anchors lymphotoxin-alpha to the cell surface through heterotrimer formation. The predominant form on the lymphocyte surface is the lymphotoxin-alpha 1/beta 2 complex (e.g. 1 molecule alpha/2 molecules beta) and this complex is the primary ligand for the lymphotoxin-beta receptor. The minor complex is lymphotoxin-alpha 2/beta 1. LTB is an inducer of the inflammatory response system and involved in normal development of lymphoid tissue. Lymphotoxin-beta isoform b is unable to complex with lymphotoxin-alpha suggesting a function for lymphotoxin-beta which is independent of lympyhotoxin-alpha. Alternative splicing results in multiple transcript variants encoding different isoforms. [provided by RefSeq, Jul 2008]
+## 5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       This gene encodes a member of the CXC chemokine family. This chemokine is released from the alpha granules of activated platelets in the form of a homotetramer which has high affinity for heparin and is involved in platelet aggregation. This protein is chemotactic for numerous other cell type and also functions as an inhibitor of hematopoiesis, angiogenesis and T-cell function. The protein also exhibits antimicrobial activity against Plasmodium falciparum. [provided by RefSeq, Oct 2014]
+## 6                                                                                                                                                                                                                               Ribosomes, the organelles that catalyze protein synthesis, consist of a small 40S subunit and a large 60S subunit. Together these subunits are composed of four RNA species and approximately 80 structurally distinct proteins. This gene encodes a member of the S27e family of ribosomal proteins and component of the 40S subunit. The encoded protein contains a C4-type zinc finger domain that can bind to zinc and may bind to nucleic acid. Mutations in this gene have been identified in numerous melanoma patients and in at least one patient with Diamond-Blackfan anemia (DBA). Elevated expression of this gene has been observed in various human cancers. As is typical for genes encoding ribosomal proteins, there are multiple processed pseudogenes of this gene dispersed through the genome. [provided by RefSeq, Jul 2018]
+## 7                                                                                                                                                                                                                                                                                                                                                                                       The protein encoded by this gene is a member of the S100 family of proteins containing 2 EF-hand calcium-binding motifs. S100 proteins are localized in the cytoplasm and/or nucleus of a wide range of cells, and involved in the regulation of a number of cellular processes such as cell cycle progression and differentiation. S100 genes include at least 13 members which are located as a cluster on chromosome 1q21. This protein may function in the inhibition of casein kinase and altered expression of this protein is associated with the disease cystic fibrosis. This antimicrobial protein exhibits antifungal and antibacterial activity. [provided by RefSeq, Nov 2014]
+## 8                                                                                       This gene is one of several chemokine genes clustered on the q-arm of chromosome 17. Chemokines form a superfamily of secreted proteins involved in immunoregulatory and inflammatory processes. The superfamily is divided into four subfamilies based on the arrangement of the N-terminal cysteine residues of the mature peptide. This chemokine, a member of the CC subfamily, functions as a chemoattractant for blood monocytes, memory T helper cells and eosinophils. It causes the release of histamine from basophils and activates eosinophils. This cytokine is one of the major HIV-suppressive factors produced by CD8+ cells. It functions as one of the natural ligands for the chemokine receptor chemokine (C-C motif) receptor 5 (CCR5), and it suppresses in vitro replication of the R5 strains of HIV-1, which use CCR5 as a coreceptor. Alternative splicing results in multiple transcript variants that encode different isoforms. [provided by RefSeq, Jul 2013]
+## 9                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        The B lymphocyte antigen receptor is a multimeric complex that includes the antigen-specific component, surface immunoglobulin (Ig). Surface Ig non-covalently associates with two other proteins, Ig-alpha and Ig-beta, which are necessary for expression and function of the B-cell antigen receptor. This gene encodes the Ig-alpha protein of the B-cell antigen component. Alternatively spliced transcript variants encoding different isoforms have been described. [provided by RefSeq, Jul 2008]</code></pre>
+<p><img src="figures/marker_gene_summary.png" /></p>
+</div>
 </div>
 <div id="cell-cluster-annotation" class="section level2 hasAnchor" number="1.8">
 <h2><span class="header-section-number">1.8</span> Cell cluster annotation<a href="seurat-like-functions.html#cell-cluster-annotation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="seurat-like-functions.html#cb22-1" tabindex="-1"></a>new_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;CD8+ T&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;Memory CD4+&quot;</span>,<span class="st">&quot;CD14+ Mono&quot;</span>,</span>
-<span id="cb22-2"><a href="seurat-like-functions.html#cb22-2" tabindex="-1"></a>    <span class="st">&quot;NK&quot;</span>,<span class="st">&quot;FCGR3A+ Mono&quot;</span>,<span class="st">&quot;Native CD4+ T&quot;</span>,<span class="st">&quot;DC&quot;</span>,<span class="st">&quot;Platelet&quot;</span>)</span>
-<span id="cb22-3"><a href="seurat-like-functions.html#cb22-3" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">RenameIdents</span>(sce, new_labels)</span>
-<span id="cb22-4"><a href="seurat-like-functions.html#cb22-4" tabindex="-1"></a><span class="fu">sc_dim</span>(sce, <span class="at">reduction=</span><span class="st">&quot;UMAP&quot;</span>) <span class="sc">+</span> <span class="fu">sc_dim_geom_label</span>()</span></code></pre></div>
-<p><img src="sclet_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="seurat-like-functions.html#cb24-1" tabindex="-1"></a>new_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;CD8+ T&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;Memory CD4+&quot;</span>,<span class="st">&quot;CD14+ Mono&quot;</span>,</span>
+<span id="cb24-2"><a href="seurat-like-functions.html#cb24-2" tabindex="-1"></a>    <span class="st">&quot;NK&quot;</span>,<span class="st">&quot;FCGR3A+ Mono&quot;</span>,<span class="st">&quot;Native CD4+ T&quot;</span>,<span class="st">&quot;DC&quot;</span>,<span class="st">&quot;Platelet&quot;</span>)</span>
+<span id="cb24-3"><a href="seurat-like-functions.html#cb24-3" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">RenameIdents</span>(sce, new_labels)</span>
+<span id="cb24-4"><a href="seurat-like-functions.html#cb24-4" tabindex="-1"></a><span class="fu">sc_dim</span>(sce, <span class="at">reduction=</span><span class="st">&quot;UMAP&quot;</span>) <span class="sc">+</span> <span class="fu">sc_dim_geom_label</span>()</span></code></pre></div>
+<p><img src="sclet_files/figure-html/umap-pbmc-cell-1.png" width="672" /></p>
 
 </div>
 </div>

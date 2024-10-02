@@ -6,4 +6,5 @@ dimensional-reduction
 clustering
 umap
 find-markers
+marker-gene-information
 cell-cluster-annotation
