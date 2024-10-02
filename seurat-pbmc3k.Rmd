@@ -99,6 +99,33 @@ p2 <- sc_dim(sce, reduction="UMAP")
 plot_list(gglist = list(PCA=p1, UMAP=p2))
 ```
 
+## Find Markers
+
+```{r}
+# find all markers of cluster 2
+cluster2.markers <- FindMarkers(sce, ident.1 = 2)
+head(cluster2.markers, n = 5)
+```
+
+```{r}
+# find all markers distinguishing cluster 5 from clusters 0 and 3
+cluster5.markers <- FindMarkers(sce, ident.1 = 5, ident.2 = c(0, 3))
+head(cluster5.markers, n = 5)
+```
+
+```{r}
+# find markers for every cluster compared to all remaining cells, 
+# report only the positive ones
+library(dplyr)
+pbmc.markers <- FindAllMarkers(sce, only.pos = TRUE)
+pbmc.markers %>%
+    group_by(cluster) %>%
+    dplyr::filter(avg_log2FC > 1) %>%
+    slice_head(n = 10) %>%
+    ungroup() -> top10
+top10    
+```
+
 ## Cell cluster annotation
 
 ```{r}
