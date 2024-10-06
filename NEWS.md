@@ -1,6 +1,10 @@
+# sclet 0.0.3.001
+
++ re-export `aplot::plot_list()` (2024-10-06, Sun)
+
 # sclet 0.0.3
 
-+ Adding cell-cell communication module. (2024-10-06, Sat)
++ Adding cell-cell communication module. (2024-10-06, Sun)
     - `runCellChat()` wrapper function for running CellChat.
 + `gene_summary_table()` to add gene summary information to marker gene table (2024-10-02, Wed)
 

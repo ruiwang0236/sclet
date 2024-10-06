@@ -3,6 +3,7 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
+\alias{plot_list}
 \alias{colData}
 \alias{rowData}
 \alias{colData<-}
@@ -17,6 +18,8 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
+  \item{aplot}{\code{\link[aplot]{plot_list}}}
+
   \item{scater}{\code{\link[scater]{plotColData}}, \code{\link[scater]{runPCA}}}
 
   \item{SummarizedExperiment}{\code{\link[SummarizedExperiment:SummarizedExperiment-class]{assay}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{colData}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{colData<-}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{rowData}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{rowData<-}}}

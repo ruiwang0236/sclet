@@ -10,7 +10,6 @@
 #' @param type one of  "triMean", "truncatedMean", "thresholdedMean", "median"
 #' @param trim the fraction (0 to 0.25) of observations to be trimmed from each end of x before the mean is computed
 #' @param min.cells min cells to filter
-#' @importFrom SingleCellExperiment colData
 #' @importFrom SummarizedExperiment assay
 #' @importFrom SummarizedExperiment assayNames
 #' @export 

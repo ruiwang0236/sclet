@@ -1,3 +1,7 @@
+#' @importFrom aplot plot_list
+#' @export
+aplot::plot_list
+
 #' @importFrom SummarizedExperiment colData
 #' @export
 SummarizedExperiment::colData
