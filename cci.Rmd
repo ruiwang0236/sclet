@@ -7,8 +7,8 @@ wrapper function for CellChat.(https://htmlpreview.github.io/?https://github.com
 library(sclet)
 
 # use demo data from CellChat, hmskin_sce
-# if there is no grouping variable, sclet will run clustering automatically.
-cci_obj <- runCellChat(hmskin_sce, group = "labels")
+data <- sce <- qs::qread("data/hmskin_sce.qs")
+cci_obj <- runCellChat(data, group = "labels")
 ```
 
 ## visulization
