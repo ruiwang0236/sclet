@@ -56,7 +56,6 @@ runCellChat <- function(sce, group = "label",
     } else if(db_item == "except Non-protein"){
         db.use <- CellChat::subsetDB(db)
     } else {
-        # c("Secreted Signaling","ECM-Receptor", "Cell-Cell Contact")
         db.use <- CellChat::subsetDB(db, search = db_item, key = "annotation")
     }
 
