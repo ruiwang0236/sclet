@@ -2,7 +2,11 @@
 
 
 ## CellChat
-wrapper function for CellChat.(https://htmlpreview.github.io/?https://github.com/jinworks/CellChat/blob/master/tutorial/CellChat-vignette.html#c-starting-from-a-singlecellexperiment-object)
+
+Wrapper function for CellChat.
+
+See also <https://htmlpreview.github.io/?https://github.com/jinworks/CellChat/blob/master/tutorial/CellChat-vignette.html#c-starting-from-a-singlecellexperiment-object>
+
 ```{r}
 library(sclet)
 library(aplot)
@@ -35,13 +39,11 @@ CellChat::netVisual_aggregate(cci_obj, signaling = pathways.show, layout = "circ
 
 
 ```{r cci-3, fig.width=7.5, fig.height=8}
-par(mfrow=c(1,1))
 CellChat::netVisual_aggregate(cci_obj, signaling = pathways.show, layout = "chord")
 ```
 
 
 ```{r cci-4, fig.width=6, fig.height=6}
-par(mfrow=c(1,1))
 CellChat::netVisual_heatmap(cci_obj, signaling = pathways.show, color.heatmap = "Reds")
 ```
 
