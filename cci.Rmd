@@ -5,6 +5,7 @@
 wrapper function for CellChat.(https://htmlpreview.github.io/?https://github.com/jinworks/CellChat/blob/master/tutorial/CellChat-vignette.html#c-starting-from-a-singlecellexperiment-object)
 ```{r}
 library(sclet)
+library(aplot)
 
 # use demo data from CellChat, hmskin_sce
 data <- sce <- qs::qread("data/hmskin_sce.qs")
@@ -12,63 +13,65 @@ cci_obj <- runCellChat(data, group = "labels")
 ```
 
 ## visulization
-```{r eval = FALSE}
+```{r cci-1, fig.width=15, fig.height=8}
 groupSize <- as.numeric(table(cci_obj@idents))
-par(mfrow = c(1,2), xpd=TRUE)
-CellChat::netVisual_circle(cci_obj@net$count, vertex.weight = groupSize, weight.scale = T, label.edge= F, title.name = "Number of interactions")
-CellChat::netVisual_circle(cci_obj@net$weight, vertex.weight = groupSize, weight.scale = T, label.edge= F, title.name = "Interaction weights/strength")
+plot_list(
+    ~CellChat::netVisual_circle(cci_obj@net$count, 
+        vertex.weight = groupSize, weight.scale = T, 
+        label.edge= F, title.name = "Number of interactions"),
+    ~CellChat::netVisual_circle(cci_obj@net$weight, 
+        vertex.weight = groupSize, weight.scale = T, 
+        label.edge= F, title.name = "Interaction weights/strength")
+)
 ```
-![](figures/cci_1.png)
 
-```{r eval = FALSE}
+
+```{r cci-2, fig.width=7.5, fig.height=8}
 pathways.show <- c("CXCL") 
 vertex.receiver = seq(1,4) 
-CellChat::netVisual_aggregate(cci_obj, signaling = pathways.show,  vertex.receiver = vertex.receiver)
-par(mfrow=c(1,1))
+# CellChat::netVisual_aggregate(cci_obj, signaling = pathways.show,  vertex.receiver = vertex.receiver)
 CellChat::netVisual_aggregate(cci_obj, signaling = pathways.show, layout = "circle")
 ```
-![](figures/cci_2.png)
 
-```{r eval = FALSE}
+
+```{r cci-3, fig.width=7.5, fig.height=8}
 par(mfrow=c(1,1))
 CellChat::netVisual_aggregate(cci_obj, signaling = pathways.show, layout = "chord")
 ```
-![](figures/cci_3.png)
 
-```{r eval = FALSE}
+
+```{r cci-4, fig.width=6, fig.height=6}
 par(mfrow=c(1,1))
 CellChat::netVisual_heatmap(cci_obj, signaling = pathways.show, color.heatmap = "Reds")
 ```
-![](figures/cci_4.png)
 
-```{r eval = FALSE}
+```{r cci-5, fig.width=6, fig.height=6}
 group.cellType <- c(rep("FIB", 4), rep("DC", 4), rep("TC", 4)) # grouping cell clusters into fibroblast, DC and TC cells
 names(group.cellType) <- levels(cci_obj@idents)
 CellChat::netVisual_chord_cell(cci_obj, signaling = pathways.show, group = group.cellType, title.name = paste0(pathways.show, " signaling network"))
 ```
-![](figures/cci_5.png)
 
-```{r eval = FALSE}
+
+```{r cci-6, fig.width=6, fig.height=6}
 CellChat::netAnalysis_contribution(cci_obj, signaling = pathways.show)
 ```
-![](figures/cci_6.png)
 
-```{r eval = FALSE}
+
+```{r cci-7, fig.width=6, fig.height=6}
 pairLR.CXCL <- CellChat::extractEnrichedLR(cci_obj, signaling = pathways.show, geneLR.return = FALSE)
 LR.show <- pairLR.CXCL[1,] 
 vertex.receiver = seq(1,4)
-CellChat::netVisual_individual(cci_obj, signaling = pathways.show,  pairLR.use = LR.show, vertex.receiver = vertex.receiver)
+# CellChat::netVisual_individual(cci_obj, signaling = pathways.show,  pairLR.use = LR.show, vertex.receiver = vertex.receiver)
 CellChat::netVisual_individual(cci_obj, signaling = pathways.show, pairLR.use = LR.show, layout = "circle")
 ```
-![](figures/cci_7.png)
 
 
-```{r eval = FALSE}
+```{r cci-8, fig.width=6, fig.height=6}
 CellChat::netVisual_individual(cci_obj, signaling = pathways.show, pairLR.use = LR.show, layout = "chord")
 ```
-![](figures/cci_8.png)
 
-```{r eval = FALSE}
+```{r cci-9, fig.width=5, fig.height=6}
 CellChat::netVisual_bubble(cci_obj, sources.use = 4, targets.use = c(5:11), remove.isolate = FALSE)
 ```
-![](figures/cci_9.png)
+
+
