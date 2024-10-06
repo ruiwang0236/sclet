@@ -8,3 +8,6 @@ umap
 find-markers
 marker-gene-information
 cell-cluster-annotation
+cell-cell-communication
+cellchat
+visulization
