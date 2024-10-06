@@ -1,4 +1,4 @@
-# sclet 0.0.2.002
+# sclet 0.0.3
 
 + Adding cell-cell communication module. (2024-10-06, Sat)
     - `runCellChat()` wrapper function for running CellChat.
