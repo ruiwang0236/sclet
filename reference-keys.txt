@@ -1,4 +1,4 @@
-seurat-like-functions
+basic-preprocessing-and-clustering
 read-10x-data
 qc
 variable-features
@@ -9,5 +9,6 @@ find-markers
 marker-gene-information
 cell-cluster-annotation
 cell-cell-communication
+input
 cellchat
 visulization
