@@ -3,7 +3,7 @@
 
 ## Input
 
-The `runCellChat()` function requires a `SingleCellExperiment` object that includes cell clustering information. For details, refer to the [Clustering](https://yulab-smu.top/sclet/seurat-like-functions.html#clustering) session.
+The `runCellChat()` function requires a `SingleCellExperiment` object that includes cell clustering information. For details, refer to the [Clustering](#FindClusters) session.
 
 The `group` parameter should reference a variable within the `SingleCellExperiment` object that holds the clustering data.
 
@@ -18,9 +18,7 @@ sce[["group_name"]] <- group
 
 ## CellChat
 
-Wrapper function for CellChat.
-
-See also <https://htmlpreview.github.io/?https://github.com/jinworks/CellChat/blob/master/tutorial/CellChat-vignette.html#c-starting-from-a-singlecellexperiment-object>
+Wrapper function for CellChat^[<https://htmlpreview.github.io/?https://github.com/jinworks/CellChat/blob/master/tutorial/CellChat-vignette.html#c-starting-from-a-singlecellexperiment-object>].
 
 ```{r}
 library(sclet)

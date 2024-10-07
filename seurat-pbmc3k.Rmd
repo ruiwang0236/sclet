@@ -79,7 +79,7 @@ sce <- runPCA(sce, subset_row = VariableFeatures(sce), exprs_values = "scaled")
 ElbowPlot(sce)
 ```
 
-## Clustering
+## Clustering {#FindClusters}
 
 ```{r}
 set.seed(2024-10-01)
