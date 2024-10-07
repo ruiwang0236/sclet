@@ -145,7 +145,7 @@ FindVariableFeatures <- function(object, nfeatures = 2000) {
 
     ## taken from Seurat
     clip.max <- sqrt(x = ncol(x = object))
-    hvf.info <- data.frame(mean = rowMeans(x = as.matrix(object)))
+    hvf.info <- data.frame(mean = Matrix::rowMeans(object))
     hvf.info$variance <- SparseRowVar2(
       mat = object,
       mu = hvf.info$mean,
@@ -245,9 +245,9 @@ ScaleData <- function(object, features = NULL, assay = "logcounts") {
     }
 
     # mat <- t(logcounts(object))
-    mat <- t(as.matrix(assay(object, assay)))
-    m <- rowMeans(mat)
-    s <- apply(mat, 1, stats::sd)
+    mat <- Matrix::t(assay(object, assay))
+    m <- Matrix::rowMeans(mat)
+    s <- apply(mat, 1, function(x) stats::sd)
     s[s == 0] <- 0.01
     SummarizedExperiment::assay(object, "scaled") <- t((mat - m) / s) 
     return(object)
@@ -457,6 +457,7 @@ FindMarkers <- function(
 
 #' @importFrom yulab.utils install_zip_gh
 #' @importFrom yulab.utils is.installed
+#' @importFrom Matrix rowSums
 FindMarkers_Presto <- function(object, ident.1 = NULL, ident.2 = NULL, clusters, 
                               min.pct = 0.01,logfc.threshold = 0.1, base=2,
                               pseudocount.use=1, ...) {
@@ -475,15 +476,15 @@ FindMarkers_Presto <- function(object, ident.1 = NULL, ident.2 = NULL, clusters,
         stop("One or both of the identity groups have no cells")}
     
     mean.fxn <- function(x) {
-        return(log(x = (rowSums(x = expm1(x = x)) + pseudocount.use)/NCOL(x), base = base))
+        log((Matrix::rowSums(expm1(x = x)) + pseudocount.use)/NCOL(x), base = base)
     }
 
     fc.name <- sprintf("avg_log%dFC", base)
     features <- rownames(x = object)
     thresh.min <- 0
-    mat <- as.matrix(object)[features, ]
-    pct.1 <- round(x = rowSums(x = mat[, cells.1, drop = FALSE]) > thresh.min/length(x = cells.1), digits = 3)
-    pct.2 <- round(x = rowSums(x = mat[, cells.2, drop = FALSE] > thresh.min)/length(x = cells.2), digits = 3)
+    mat <- object[features, ]
+    pct.1 <- round(Matrix::rowSums(mat[, cells.1, drop = FALSE]) > thresh.min/length(cells.1), digits = 3)
+    pct.2 <- round(Matrix::rowSums(mat[, cells.2, drop = FALSE] > thresh.min)/length(cells.2), digits = 3)
     data.1 <- mean.fxn(mat[, cells.1, drop = FALSE])
     data.2 <- mean.fxn(mat[, cells.2, drop = FALSE])
     fc <- (data.1 - data.2) 
