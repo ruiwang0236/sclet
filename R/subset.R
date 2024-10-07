@@ -28,15 +28,15 @@ subset_feature <- function(x, mincell, peek = TRUE) {
         #y <- x[[Assays(x)]]$counts
         y <- x@assays[[1]]$counts
     } else {
-        y <- as.matrix(counts(x))
+        y <- counts(x)
     }
     
     if (!peek) {
-        return(x[rowSums(y > 0) >= mincell, ])
+        return(x[Matrix::rowSums(y > 0) >= mincell, ])
     }
 
     n <- 0:mincell
-    yy <- sapply(n, \(i) sum(rowSums(y > 0) >= i))
+    yy <- sapply(n, \(i) sum(Matrix::rowSums(y > 0) >= i))
     r <- yy/yy[1] * 100
     j <- round(r/2)
     for (i in seq_along(j)) {
