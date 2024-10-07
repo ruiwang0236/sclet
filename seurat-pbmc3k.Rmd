@@ -1,4 +1,7 @@
-# Seurat-like functions 
+# Basic: preprocessing and clustering
+
+
+We created Seurat-like functions to help you get started effortlessly.
 
 ```{r include=FALSE}
 knitr::opts_chunk$set(warning = FALSE,

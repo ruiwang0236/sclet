@@ -1,6 +1,21 @@
 # Cell-cell communication
 
 
+## Input
+
+The `runCellChat()` function requires a `SingleCellExperiment` object that includes cell clustering information. For details, refer to the [Clustering](https://yulab-smu.top/sclet/seurat-like-functions.html#clustering) session.
+
+The `group` parameter should reference a variable within the `SingleCellExperiment` object that holds the clustering data.
+
+Users can add their own clustering using the following commands:
+
+```
+colData(sce)$group_name <- group
+# OR
+sce[["group_name"]] <- group
+```
+
+
 ## CellChat
 
 Wrapper function for CellChat.
@@ -12,8 +27,8 @@ library(sclet)
 library(aplot)
 
 # use demo data from CellChat, hmskin_sce
-data <- sce <- qs::qread("data/hmskin_sce.qs")
-cci_obj <- runCellChat(data, group = "labels")
+sce <- qs::qread("data/hmskin_sce.qs")
+cci_obj <- runCellChat(sce, group = "labels")
 ```
 
 ## visulization
