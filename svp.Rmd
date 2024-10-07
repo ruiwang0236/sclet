@@ -1,15 +1,28 @@
 # SVP
 Robust analysis of 'gene set' activity in spatial or single-cell data.
 
-```{r eval = FALSE}
+```{r}
 library(SpatialExperiment)
 library(SVP)
 data(hpda_spe_cell_dec)
+
+# r$> assay(hpda_spe_cell_dec)[1:5,1:5]
+# 5 x 5 sparse Matrix of class "dgCMatrix"
+#                                             Spot1        Spot2        Spot3        Spot4        Spot5
+# Acinar cells                         3.283881e-04 6.931743e-06 4.820951e-05 1.882577e-03 9.269843e-04
+# Cancer clone A                       2.880388e-04 2.013973e-04 9.167013e-05 9.642225e-05 6.704812e-05
+# Cancer clone B                       1.569730e-04 2.744810e-04 2.151324e-04 1.502651e-05 4.283322e-06
+# Ductal APOL1 high-hypoxic            3.132481e-05 3.902286e-04 4.240874e-05 3.140970e-06 1.464118e-04
+# Ductal CRISP3 high-centroacinar like 9.546611e-05 5.025320e-03 2.112512e-03 1.140155e-03 3.873088e-03
 ```
+
+hpda_spe_cell_dec is the result of runSGSA with HPDA A sample from (doi:10.1038/s41587-019-0392-8). 
+Each item in the matrix is the marker gene set activity in the spot. The marker gene set represents the cell type.
+We can use svp the investigate if a cell type cluters and if two cell types appear in the same region.
 
 ## runLISA
 Usage of local indicators of spatial association (LISA) to identify the hotspot in the spatial space
-```{r eval = FALSE}
+```{r}
 svres <- runDetectSVG(hpda_spe_cell_dec, assay.type = 'affi.score', 
                       method = 'moransi', action = 'only') 
 
@@ -24,7 +37,7 @@ svres <- runDetectSVG(hpda_spe_cell_dec, assay.type = 'affi.score',
 ```
 
 
-```{r eval = FALSE}
+```{r}
 lisa.res12 <- hpda_spe_cell_dec |>
    runLISA(
      features = c(1, 2, 3), 
@@ -44,7 +57,7 @@ colData(hpda_spe_cell_dec)$`cluster.test.Cancer.B` <- lisa.res12[["Cancer clone 
 dplyr::pull(cluster.test)
 ```
 
-```{r eval = FALSE}
+```{r, fig.width=10, fig.height=10}
 library(ggplot2)
 library(ggsc)
 p1 <- sc_spatial(hpda_spe_cell_dec,
@@ -58,9 +71,9 @@ p1 <- sc_spatial(hpda_spe_cell_dec,
 ) +scale_color_manual(values=c("black", "white"))
 p1
 ```
-![](figures/svp_1.png)
 
-```{r eval = FALSE}
+
+```{r, fig.width=10, fig.height=10}
 f1 <- sc_spatial(hpda_spe_cell_dec, features="Cancer clone A",
             mapping=aes(x = x, y = y),
             pointsize=10) + 
@@ -72,9 +85,9 @@ f1 <- sc_spatial(hpda_spe_cell_dec, features="Cancer clone A",
         scale_bg_color_manual(values=c('black'))
 f1
 ```
-![](figures/svp_2.png)
 
-```{r eval = FALSE}
+
+```{r, fig.width=10, fig.height=10}
 
 f2 <- sc_spatial(hpda_spe_cell_dec, features="Acinar cells",
             mapping=aes(x=x,y=y),
@@ -86,10 +99,10 @@ f2 <- sc_spatial(hpda_spe_cell_dec, features="Acinar cells",
         scale_bg_color_manual(values=c('black'))
 f2
 ```
-![](figures/svp_3.png)
 
 
-```{r eval = FALSE}
+
+```{r, fig.width=10, fig.height=10}
 f3 <- sc_spatial(hpda_spe_cell_dec, features="Cancer clone B",
             mapping=aes(x=x,y=y),
             pointsize=10) +
@@ -100,7 +113,7 @@ f3 <- sc_spatial(hpda_spe_cell_dec, features="Cancer clone B",
         scale_bg_color_manual(values=c('black'))
 f3
 ```
-![](figures/svp_4.png)
+
 
 ## runLOCALBV
 explore the local bivariate relationship in the spatial space.
