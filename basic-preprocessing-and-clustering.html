@@ -142,7 +142,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#qc"><i class="fa fa-check"></i><b>1.2</b> QC</a></li>
 <li class="chapter" data-level="1.3" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#variable-features"><i class="fa fa-check"></i><b>1.3</b> Variable features</a></li>
 <li class="chapter" data-level="1.4" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#dimensional-reduction"><i class="fa fa-check"></i><b>1.4</b> Dimensional reduction</a></li>
-<li class="chapter" data-level="1.5" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#clustering"><i class="fa fa-check"></i><b>1.5</b> Clustering</a></li>
+<li class="chapter" data-level="1.5" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#FindClusters"><i class="fa fa-check"></i><b>1.5</b> Clustering</a></li>
 <li class="chapter" data-level="1.6" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#umap"><i class="fa fa-check"></i><b>1.6</b> UMAP</a></li>
 <li class="chapter" data-level="1.7" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#find-markers"><i class="fa fa-check"></i><b>1.7</b> Find Markers</a>
 <ul>
@@ -251,8 +251,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb12-3"><a href="basic-preprocessing-and-clustering.html#cb12-3" tabindex="-1"></a><span class="fu">ElbowPlot</span>(sce)</span></code></pre></div>
 <p><img src="sclet_files/figure-html/elbowplot-pbmc-1.png" width="960" /></p>
 </div>
-<div id="clustering" class="section level2 hasAnchor" number="1.5">
-<h2><span class="header-section-number">1.5</span> Clustering<a href="basic-preprocessing-and-clustering.html#clustering" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="FindClusters" class="section level2 hasAnchor" number="1.5">
+<h2><span class="header-section-number">1.5</span> Clustering<a href="basic-preprocessing-and-clustering.html#FindClusters" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="basic-preprocessing-and-clustering.html#cb13-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2024-10-01</span>)</span>
 <span id="cb13-2"><a href="basic-preprocessing-and-clustering.html#cb13-2" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">FindNeighbors</span>(sce, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
 <span id="cb13-3"><a href="basic-preprocessing-and-clustering.html#cb13-3" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">FindClusters</span>(sce)</span>

@@ -3,7 +3,7 @@ read-10x-data
 qc
 variable-features
 dimensional-reduction
-clustering
+FindClusters
 umap
 find-markers
 marker-gene-information
