@@ -3,7 +3,86 @@ Robust analysis of 'gene set' activity in spatial or single-cell data.
 
 ```{r}
 library(SpatialExperiment)
+library(SingleCellExperiment)
+library(scuttle)
 library(SVP)
+library(ggplot2)
+library(ggsc)
+```
+
+## runSGSA
+Calculate the activity of gene sets in spatial or single-cell data with restart walk with restart and hyper test weighted.
+sceSubPbmc is a small SingleCellExperiment data set from pbmck3 which contains 1304 genes and 800 cells (extract randomly).
+```{r}
+data(sceSubPbmc)
+sceSubPbmc <- scuttle::logNormCounts(sceSubPbmc)
+# the using runMCA to perform MCA (Multiple Correspondence Analysis)
+# this is refer to the CelliD, but we using the Eigen to speed up.
+# You can view the help information of runMCA using ?runMCA.
+sceSubPbmc <- runMCA(sceSubPbmc, assay.type = 'logcounts')
+```
+
+
+CellCycle.Hs is the S and G2M gene list are from the Seurat which refer to this article (doi:10.1126/science.aad050), the G1 gene list is from the G1_PHASE of Human Gene Set in MSigDB, but remove the duplicated records with S and G2M gene list.
+```{r}
+# Next, we can calculate the activity score of gene sets provided.
+# Here, we use the Cell Cycle gene set from the Seurat 
+# You can use other gene set, such as KEGG pathway, GO, Hallmark of MSigDB
+# or TFs gene sets etc.
+data(CellCycle.Hs)
+sceSubPbmc <- runSGSA(sceSubPbmc, gset.idx.list = CellCycle.Hs, gsvaExp.name = 'CellCycle')
+# Then a SVPE class which inherits SingleCellExperiment, is return.
+sceSubPbmc
+```
+
+```{r}
+# You can obtaion the score matrix by following the commond
+sceSubPbmc |> gsvaExp('CellCycle') 
+sceSubPbmc |> gsvaExp("CellCycle") |> assay() |> t() |> head()
+```
+
+```{r}
+# Then you can use the ggsc or other package to visulize
+# and you can try to use the findMarkers of scran or other packages to identify
+# the different gene sets.   
+sceSubPbmc <- sceSubPbmc |> 
+                scater::runPCA(assay.type = 'logcounts', ntop = 600) |>
+                scater::runUMAP(dimred = 'PCA')
+# withReducedDim = TRUE, the original reducetion results from original gene features
+# will be add the colData in the sce.cellcycle.
+sce.cellcycle <- sceSubPbmc |> gsvaExp('CellCycle', withReducedDim=TRUE)
+sce.cellcycle
+```
+
+```{r, fig.width=10, fig.height=10}
+sce.cellcycle |> sc_violin(
+                      features = rownames(sce.cellcycle), 
+                      mapping = aes(x=seurat_annotations, fill = seurat_annotations)
+                   ) + 
+                   scale_x_discrete(guide=guide_axis(angle=-45))
+```
+
+```{r, fig.width=10, fig.height=10}
+sce.cellcycle |> sc_feature(features= "S", reduction='UMAP')
+```
+
+```{r}
+library(scran)
+cellcycle.test.res <- sce.cellcycle |> findMarkers(
+                group = sce.cellcycle$seurat_annotations, 
+                test.type = 'wilcox', 
+                assay.type = 'affi.score', 
+                add.summary = TRUE
+                )
+cellcycle.test.res$B
+```
+
+## runLISA
+hpda_spe_cell_dec is the result of runSGSA with HPDA A sample from (doi:10.1038/s41587-019-0392-8). 
+Each item in the matrix is the marker gene set activity in the spot. The marker gene set represents the cell type.
+We can use svp the investigate if a cell type cluters and if two cell types appear in the same region.
+Usage of local indicators of spatial association (LISA) to identify the hotspot in the spatial space
+```{r}
 data(hpda_spe_cell_dec)
 
 # r$> assay(hpda_spe_cell_dec)[1:5,1:5]
@@ -14,15 +93,7 @@ data(hpda_spe_cell_dec)
 # Cancer clone B                       1.569730e-04 2.744810e-04 2.151324e-04 1.502651e-05 4.283322e-06
 # Ductal APOL1 high-hypoxic            3.132481e-05 3.902286e-04 4.240874e-05 3.140970e-06 1.464118e-04
 # Ductal CRISP3 high-centroacinar like 9.546611e-05 5.025320e-03 2.112512e-03 1.140155e-03 3.873088e-03
-```
 
-hpda_spe_cell_dec is the result of runSGSA with HPDA A sample from (doi:10.1038/s41587-019-0392-8). 
-Each item in the matrix is the marker gene set activity in the spot. The marker gene set represents the cell type.
-We can use svp the investigate if a cell type cluters and if two cell types appear in the same region.
-
-## runLISA
-Usage of local indicators of spatial association (LISA) to identify the hotspot in the spatial space
-```{r}
 svres <- runDetectSVG(hpda_spe_cell_dec, assay.type = 'affi.score', 
                       method = 'moransi', action = 'only') 
 
@@ -58,8 +129,6 @@ dplyr::pull(cluster.test)
 ```
 
 ```{r, fig.width=10, fig.height=10}
-library(ggplot2)
-library(ggsc)
 p1 <- sc_spatial(hpda_spe_cell_dec,
             features = rownames(hpda_spe_cell_dec),
             mapping = aes(x=x, y=y, color=cluster.test.Cancer.A),
