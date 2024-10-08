@@ -12,3 +12,7 @@ cell-cell-communication
 input
 cellchat
 visulization
+svp
+runsgsa
+runlisa
+runlocalbv
