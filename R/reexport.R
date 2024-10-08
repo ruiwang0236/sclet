@@ -33,3 +33,8 @@ scater::plotColData
 #' @importFrom scuttle logNormCounts
 #' @export
 scuttle::logNormCounts
+
+#' @importFrom scuttle perCellQCMetrics
+#' @export
+scuttle::perCellQCMetrics
+

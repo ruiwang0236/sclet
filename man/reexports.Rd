@@ -12,6 +12,7 @@
 \alias{runPCA}
 \alias{plotColData}
 \alias{logNormCounts}
+\alias{perCellQCMetrics}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -23,7 +24,7 @@ below to see their documentation.
 
   \item{scater}{\code{\link[scater]{plotColData}}, \code{\link[scater]{runPCA}}}
 
-  \item{scuttle}{\code{\link[scuttle]{logNormCounts}}}
+  \item{scuttle}{\code{\link[scuttle]{logNormCounts}}, \code{\link[scuttle]{perCellQCMetrics}}}
 
   \item{SummarizedExperiment}{\code{\link[SummarizedExperiment:SummarizedExperiment-class]{assay}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{colData}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{colData<-}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{rowData}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{rowData<-}}}
 }}
