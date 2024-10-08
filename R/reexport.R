@@ -30,3 +30,6 @@ scater::runPCA
 #' @export
 scater::plotColData
 
+#' @importFrom scuttle logNormCounts
+#' @export
+scuttle::logNormCounts

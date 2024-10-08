@@ -105,7 +105,7 @@ FeatureScatter <- function(object, feature1, feature2) {
 #' @title NormalizeData
 #' @param object a SingleCellExperiment object
 #' @param scale.factor scale factor
-#' @return a SingleCellExperiment object with 'logcounts' assay updated.
+#' @return a SingleCellExperiment object with 'logcounts' assay created/updated.
 #' @importFrom SummarizedExperiment 'assay<-'
 #' @importFrom yulab.utils get_fun_from_pkg
 #' @export

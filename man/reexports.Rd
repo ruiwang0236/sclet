@@ -11,6 +11,7 @@
 \alias{assay}
 \alias{runPCA}
 \alias{plotColData}
+\alias{logNormCounts}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -21,6 +22,8 @@ below to see their documentation.
   \item{aplot}{\code{\link[aplot]{plot_list}}}
 
   \item{scater}{\code{\link[scater]{plotColData}}, \code{\link[scater]{runPCA}}}
+
+  \item{scuttle}{\code{\link[scuttle]{logNormCounts}}}
 
   \item{SummarizedExperiment}{\code{\link[SummarizedExperiment:SummarizedExperiment-class]{assay}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{colData}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{colData<-}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{rowData}}, \code{\link[SummarizedExperiment:SummarizedExperiment-class]{rowData<-}}}
 }}

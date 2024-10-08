@@ -12,7 +12,7 @@ NormalizeData(object, scale.factor = 10000)
 \item{scale.factor}{scale factor}
 }
 \value{
-a SingleCellExperiment object with 'logcounts' assay updated.
+a SingleCellExperiment object with 'logcounts' assay created/updated.
 }
 \description{
 normalize data
