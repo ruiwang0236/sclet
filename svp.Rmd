@@ -54,7 +54,7 @@ sce.cellcycle <- sceSubPbmc |> gsvaExp('CellCycle', withReducedDim=TRUE)
 sce.cellcycle
 ```
 
-```{r, fig.width=10, fig.height=10}
+```{r svp-cc-violin, fig.width=10, fig.height=10}
 sce.cellcycle |> sc_violin(
                       features = rownames(sce.cellcycle), 
                       mapping = aes(x=seurat_annotations, fill = seurat_annotations)
@@ -62,7 +62,7 @@ sce.cellcycle |> sc_violin(
                    scale_x_discrete(guide=guide_axis(angle=-45))
 ```
 
-```{r, fig.width=10, fig.height=10}
+```{r svp-cc-s-umap, fig.width=10, fig.height=10}
 sce.cellcycle |> sc_feature(features= "S", reduction='UMAP')
 ```
 
@@ -128,7 +128,7 @@ colData(hpda_spe_cell_dec)$`cluster.test.Cancer.B` <- lisa.res12[["Cancer clone 
 dplyr::pull(cluster.test)
 ```
 
-```{r, fig.width=10, fig.height=10}
+```{r svp-hpda-spatial-1, fig.width=10, fig.height=10}
 p1 <- sc_spatial(hpda_spe_cell_dec,
             features = rownames(hpda_spe_cell_dec),
             mapping = aes(x=x, y=y, color=cluster.test.Cancer.A),
@@ -137,12 +137,12 @@ p1 <- sc_spatial(hpda_spe_cell_dec,
             bg_circle_radius = 1.1,
             color=NA,
             linewidth=2
-) +scale_color_manual(values=c("black", "white"))
+) + scale_color_manual(values=c("black", "white"))
 p1
 ```
 
 
-```{r, fig.width=10, fig.height=10}
+```{r svp-hpda-spatial-2, fig.width=10, fig.height=10}
 f1 <- sc_spatial(hpda_spe_cell_dec, features="Cancer clone A",
             mapping=aes(x = x, y = y),
             pointsize=10) + 
@@ -156,7 +156,7 @@ f1
 ```
 
 
-```{r, fig.width=10, fig.height=10}
+```{r svp-hpda-spatial-3, fig.width=10, fig.height=10}
 
 f2 <- sc_spatial(hpda_spe_cell_dec, features="Acinar cells",
             mapping=aes(x=x,y=y),
@@ -171,7 +171,7 @@ f2
 
 
 
-```{r, fig.width=10, fig.height=10}
+```{r svp-hpda-spatial-4, fig.width=10, fig.height=10}
 f3 <- sc_spatial(hpda_spe_cell_dec, features="Cancer clone B",
             mapping=aes(x=x,y=y),
             pointsize=10) +
