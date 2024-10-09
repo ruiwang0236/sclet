@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Cell type annotation | sclet: A Lightweight Toolkit for Single-Cell Data Analysis</title>
+  <meta name="description" content="2 Cell type annotation | sclet: A Lightweight Toolkit for Single-Cell Data Analysis" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Cell type annotation | sclet: A Lightweight Toolkit for Single-Cell Data Analysis" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Cell type annotation | sclet: A Lightweight Toolkit for Single-Cell Data Analysis" />
+  
+  
+  
+
+
+
+<meta name="date" content="2024-10-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="basic-preprocessing-and-clustering.html"/>
+<link rel="next" href="cell-cell-communication.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html"><i class="fa fa-check"></i><b>1</b> Basic: preprocessing and clustering</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#read-10x-data"><i class="fa fa-check"></i><b>1.1</b> Read 10X data</a></li>
+<li class="chapter" data-level="1.2" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#qc"><i class="fa fa-check"></i><b>1.2</b> QC</a></li>
+<li class="chapter" data-level="1.3" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#variable-features"><i class="fa fa-check"></i><b>1.3</b> Variable features</a></li>
+<li class="chapter" data-level="1.4" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#dimensional-reduction"><i class="fa fa-check"></i><b>1.4</b> Dimensional reduction</a></li>
+<li class="chapter" data-level="1.5" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#FindClusters"><i class="fa fa-check"></i><b>1.5</b> Clustering</a></li>
+<li class="chapter" data-level="1.6" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#umap"><i class="fa fa-check"></i><b>1.6</b> UMAP</a></li>
+<li class="chapter" data-level="1.7" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#find-markers"><i class="fa fa-check"></i><b>1.7</b> Find Markers</a>
+<ul>
+<li class="chapter" data-level="1.7.1" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#marker-gene-information"><i class="fa fa-check"></i><b>1.7.1</b> Marker gene information</a></li>
+</ul></li>
+<li class="chapter" data-level="1.8" data-path="basic-preprocessing-and-clustering.html"><a href="basic-preprocessing-and-clustering.html#manual-annotation"><i class="fa fa-check"></i><b>1.8</b> Cell cluster annotation</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="cell-type-annotation.html"><a href="cell-type-annotation.html"><i class="fa fa-check"></i><b>2</b> Cell type annotation</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="cell-type-annotation.html"><a href="cell-type-annotation.html#manual-annotation-1"><i class="fa fa-check"></i><b>2.1</b> Manual annotation</a></li>
+<li class="chapter" data-level="2.2" data-path="cell-type-annotation.html"><a href="cell-type-annotation.html#automat-annotation"><i class="fa fa-check"></i><b>2.2</b> Automat annotation</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="cell-type-annotation.html"><a href="cell-type-annotation.html#run-singler"><i class="fa fa-check"></i><b>2.2.1</b> Run SingleR</a></li>
+<li class="chapter" data-level="2.2.2" data-path="cell-type-annotation.html"><a href="cell-type-annotation.html#annotate-with-singler-result"><i class="fa fa-check"></i><b>2.2.2</b> Annotate with SingleR result</a></li>
+<li class="chapter" data-level="2.2.3" data-path="cell-type-annotation.html"><a href="cell-type-annotation.html#comparision-with-manual-annotation-result"><i class="fa fa-check"></i><b>2.2.3</b> Comparision with manual annotation result</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="cell-cell-communication.html"><a href="cell-cell-communication.html"><i class="fa fa-check"></i><b>3</b> Cell-cell communication</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="cell-cell-communication.html"><a href="cell-cell-communication.html#input"><i class="fa fa-check"></i><b>3.1</b> Input</a></li>
+<li class="chapter" data-level="3.2" data-path="cell-cell-communication.html"><a href="cell-cell-communication.html#cellchat"><i class="fa fa-check"></i><b>3.2</b> CellChat</a></li>
+<li class="chapter" data-level="3.3" data-path="cell-cell-communication.html"><a href="cell-cell-communication.html#visulization"><i class="fa fa-check"></i><b>3.3</b> visulization</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="svp.html"><a href="svp.html"><i class="fa fa-check"></i><b>4</b> SVP</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="svp.html"><a href="svp.html#runsgsa"><i class="fa fa-check"></i><b>4.1</b> runSGSA</a></li>
+<li class="chapter" data-level="4.2" data-path="svp.html"><a href="svp.html#runlisa"><i class="fa fa-check"></i><b>4.2</b> runLISA</a></li>
+<li class="chapter" data-level="4.3" data-path="svp.html"><a href="svp.html#runlocalbv"><i class="fa fa-check"></i><b>4.3</b> runLOCALBV</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">sclet: A Lightweight Toolkit for Single-Cell Data Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="cell-type-annotation" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">2</span> Cell type annotation<a href="cell-type-annotation.html#cell-type-annotation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="manual-annotation-1" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Manual annotation<a href="cell-type-annotation.html#manual-annotation-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Please refer to the <a href="basic-preprocessing-and-clustering.html#manual-annotation">Cell cluster annotation</a> session.</p>
+</div>
+<div id="automat-annotation" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Automat annotation<a href="cell-type-annotation.html#automat-annotation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="run-singler" class="section level3 hasAnchor" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Run SingleR<a href="cell-type-annotation.html#run-singler" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="cell-type-annotation.html#cb25-1" tabindex="-1"></a><span class="fu">library</span>(SingleR)</span>
+<span id="cb25-2"><a href="cell-type-annotation.html#cb25-2" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="cell-type-annotation.html#cb25-3" tabindex="-1"></a>hpca <span class="ot">&lt;-</span> celldex<span class="sc">::</span><span class="fu">HumanPrimaryCellAtlasData</span>()</span>
+<span id="cb25-4"><a href="cell-type-annotation.html#cb25-4" tabindex="-1"></a>hpca</span></code></pre></div>
+<pre><code>## class: SummarizedExperiment 
+## dim: 19363 713 
+## metadata(0):
+## assays(1): logcounts
+## rownames(19363): A1BG A1BG-AS1 ... ZZEF1 ZZZ3
+## rowData names(0):
+## colnames(713): GSM112490 GSM112491 ... GSM92233
+##   GSM92234
+## colData names(3): label.main label.fine label.ont</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="cell-type-annotation.html#cb27-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">SingleR</span>(<span class="at">test =</span> <span class="fu">assay</span>(pbmc, <span class="st">&quot;logcounts&quot;</span>), <span class="at">ref =</span> hpca, <span class="at">labels =</span> hpca<span class="sc">$</span>label.main)</span>
+<span id="cb27-2"><a href="cell-type-annotation.html#cb27-2" tabindex="-1"></a><span class="fu">head</span>(res)</span></code></pre></div>
+<pre><code>## DataFrame with 6 rows and 4 columns
+##                            scores      labels delta.next
+##                          &lt;matrix&gt; &lt;character&gt;  &lt;numeric&gt;
+## 1 0.1040907:0.233575:0.222844:...     T_cells  0.0888618
+## 2 0.1017499:0.358524:0.299235:...      B_cell  0.3046119
+## 3 0.0696533:0.265561:0.237793:...     T_cells  0.1985708
+## 4 0.0863639:0.235842:0.275857:...    Monocyte  0.0503585
+## 5 0.0737555:0.164465:0.175442:...     NK_cell  0.0892196
+## 6 0.1281878:0.258801:0.249245:...     T_cells  0.0775251
+##   pruned.labels
+##     &lt;character&gt;
+## 1       T_cells
+## 2        B_cell
+## 3       T_cells
+## 4      Monocyte
+## 5       NK_cell
+## 6       T_cells</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="cell-type-annotation.html#cb29-1" tabindex="-1"></a>dice <span class="ot">&lt;-</span> celldex<span class="sc">::</span><span class="fu">DatabaseImmuneCellExpressionData</span>()</span>
+<span id="cb29-2"><a href="cell-type-annotation.html#cb29-2" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> <span class="fu">SingleR</span>(<span class="at">test =</span> <span class="fu">assay</span>(pbmc, <span class="st">&quot;logcounts&quot;</span>), <span class="at">ref =</span> dice, <span class="at">labels =</span> dice<span class="sc">$</span>label.main)</span>
+<span id="cb29-3"><a href="cell-type-annotation.html#cb29-3" tabindex="-1"></a><span class="fu">head</span>(res2)</span></code></pre></div>
+<pre><code>## DataFrame with 6 rows and 4 columns
+##                                scores        labels
+##                              &lt;matrix&gt;   &lt;character&gt;
+## 1  0.01278759:0.0594162:0.1731098:... T cells, CD4+
+## 2  0.26468267:0.1424061:0.0667195:...       B cells
+## 3  0.03184648:0.0768767:0.2039776:... T cells, CD4+
+## 4 -0.00914745:0.3439882:0.0610696:...     Monocytes
+## 5 -0.04285154:0.0396558:0.2513840:...      NK cells
+## 6  0.06123675:0.0980547:0.1470082:... T cells, CD4+
+##   delta.next pruned.labels
+##    &lt;numeric&gt;   &lt;character&gt;
+## 1 0.00808206 T cells, CD4+
+## 2 0.12227658       B cells
+## 3 0.05825145 T cells, CD4+
+## 4 0.28291862     Monocytes
+## 5 0.15577995      NK cells
+## 6 0.12673642 T cells, CD4+</code></pre>
+</div>
+<div id="annotate-with-singler-result" class="section level3 hasAnchor" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Annotate with SingleR result<a href="cell-type-annotation.html#annotate-with-singler-result" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="cell-type-annotation.html#cb31-1" tabindex="-1"></a>pbmc[[<span class="st">&#39;hpca_label&#39;</span>]] <span class="ot">&lt;-</span> res<span class="sc">$</span>labels</span>
+<span id="cb31-2"><a href="cell-type-annotation.html#cb31-2" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="cell-type-annotation.html#cb31-3" tabindex="-1"></a>pbmc[[<span class="st">&#39;dice_label&#39;</span>]] <span class="ot">&lt;-</span> res2<span class="sc">$</span>labels</span></code></pre></div>
+</div>
+<div id="comparision-with-manual-annotation-result" class="section level3 hasAnchor" number="2.2.3">
+<h3><span class="header-section-number">2.2.3</span> Comparision with manual annotation result<a href="cell-type-annotation.html#comparision-with-manual-annotation-result" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="cell-type-annotation.html#cb32-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">colData</span>(pbmc)[, <span class="fu">c</span>(<span class="st">&quot;label&quot;</span>, <span class="st">&quot;hpca_label&quot;</span>, <span class="st">&quot;dice_label&quot;</span>)]</span>
+<span id="cb32-2"><a href="cell-type-annotation.html#cb32-2" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="cell-type-annotation.html#cb32-3" tabindex="-1"></a><span class="fu">plot_list</span>(</span>
+<span id="cb32-4"><a href="cell-type-annotation.html#cb32-4" tabindex="-1"></a>    <span class="at">manual =</span> <span class="fu">sc_dim</span>(pbmc, <span class="at">reduction=</span><span class="st">&quot;UMAP&quot;</span>),    </span>
+<span id="cb32-5"><a href="cell-type-annotation.html#cb32-5" tabindex="-1"></a>    <span class="at">hpca =</span> <span class="fu">sc_dim</span>(pbmc, <span class="at">reduction=</span><span class="st">&quot;UMAP&quot;</span>, <span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">color=</span>hpca_label)),</span>
+<span id="cb32-6"><a href="cell-type-annotation.html#cb32-6" tabindex="-1"></a>    <span class="at">dice =</span> <span class="fu">sc_dim</span>(pbmc, <span class="at">reduction=</span><span class="st">&quot;UMAP&quot;</span>, <span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">color=</span>dice_label)),</span>
+<span id="cb32-7"><a href="cell-type-annotation.html#cb32-7" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">&amp;</span> </span>
+<span id="cb32-8"><a href="cell-type-annotation.html#cb32-8" tabindex="-1"></a><span class="fu">sc_dim_geom_label</span>(<span class="at">geom =</span> ggrepel<span class="sc">::</span>geom_text_repel) <span class="sc">&amp;</span> </span>
+<span id="cb32-9"><a href="cell-type-annotation.html#cb32-9" tabindex="-1"></a><span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&#39;inside&#39;</span>)</span></code></pre></div>
+<p><img src="sclet_files/figure-html/annotation-comparison-1.png" width="1536" /></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="cell-type-annotation.html#cb33-1" tabindex="-1"></a><span class="fu">table</span>(x[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)])</span></code></pre></div>
+<pre><code>##                hpca_label
+## label           B_cell CMP Monocyte NK_cell Platelets
+##   CD8+ T             0   0        0      32         0
+##   B                333   2        0       0         0
+##   Memory CD4+        0   0        0       0         0
+##   CD14+ Mono         0   0      444       0         0
+##   NK                 0   0        0     155         0
+##   FCGR3A+ Mono       0   0      152       0         0
+##   Native CD4+ T      0   2        0       2         0
+##   DC                 0   0       19       0         0
+##   Platelet           0   0        0       0        12
+##                hpca_label
+## label           Pre-B_cell_CD34- Pro-B_cell_CD34+ T_cells
+##   CD8+ T                       1                1     363
+##   B                            3                4       7
+##   Memory CD4+                  2                0     529
+##   CD14+ Mono                  48                0       0
+##   NK                           1                0       1
+##   FCGR3A+ Mono                 6                0       1
+##   Native CD4+ T                2                0     514
+##   DC                           2                0       0
+##   Platelet                     0                0       0</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="cell-type-annotation.html#cb35-1" tabindex="-1"></a><span class="fu">table</span>(x[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)])</span></code></pre></div>
+<pre><code>##                dice_label
+## label           B cells Monocytes NK cells T cells, CD4+
+##   CD8+ T              0         1      174           148
+##   B                 340         4        1             3
+##   Memory CD4+         0         0        0           495
+##   CD14+ Mono          0       492        0             0
+##   NK                  0         0      157             0
+##   FCGR3A+ Mono        0       159        0             0
+##   Native CD4+ T       0         2        0           279
+##   DC                  0        21        0             0
+##   Platelet            0        12        0             0
+##                dice_label
+## label           T cells, CD8+
+##   CD8+ T                   74
+##   B                         1
+##   Memory CD4+              36
+##   CD14+ Mono                0
+##   NK                        0
+##   FCGR3A+ Mono              0
+##   Native CD4+ T           239
+##   DC                        0
+##   Platelet                  0</code></pre>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="basic-preprocessing-and-clustering.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="cell-cell-communication.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -7,7 +7,13 @@ FindClusters
 umap
 find-markers
 marker-gene-information
-cell-cluster-annotation
+manual-annotation
+cell-type-annotation
+manual-annotation-1
+automat-annotation
+run-singler
+annotate-with-singler-result
+comparision-with-manual-annotation-result
 cell-cell-communication
 input
 cellchat
