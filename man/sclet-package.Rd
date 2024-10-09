@@ -17,6 +17,7 @@ Other contributors:
   \item Kaijia Huang \email{2947569391@qq.com} [contributor]
   \item Nan He \email{hinna@i.smu.edu.cn} [contributor]
   \item Ming Li \email{limiang929@gmail.com} [contributor]
+  \item Junrui Li \email{1523467190@qq.com} [contributor]
 }
 
 }
