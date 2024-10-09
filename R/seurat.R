@@ -249,7 +249,7 @@ ScaleData <- function(object, features = NULL, assay = "logcounts") {
     m <- Matrix::rowMeans(mat)
     s <- apply(mat, 1, stats::sd)
     s[s == 0] <- 0.01
-    SummarizedExperiment::assay(object, "scaled") <- t((mat - m) / s) 
+    SummarizedExperiment::assay(object, "scaled") <- Matrix::t((mat - m) / s) 
     return(object)
 }
 
@@ -352,9 +352,16 @@ RunUMAP <- function(object, dims) {
 #' @importFrom SingleCellExperiment "colLabels<-"
 #' @export 
 RenameIdents <- function(object, new_ids) {
+    old_ids <- colLabels(object)
+    lv <- levels(old_ids)
+
+    if (!is.null(names(new_ids))) {
+        new_ids <- new_ids[lv]
+    }
+
     colLabels(object) <- factor(
-        colLabels(object), 
-        levels = levels(colLabels(object)), 
+        old_ids, 
+        levels = lv, 
         labels = new_ids
     )
     
