@@ -1,4 +1,4 @@
-# sclet 0.0.3.003
+# sclet 0.0.4
 
 + re-export `scuttle::logNormCounts()` and `scuttle::perCellQCMetrics(()` (2024-10-08, Tue)
 + Import 'Matrix' for calculate stats of SparseMatrix (2024-10-07, Mon)

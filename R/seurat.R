@@ -242,12 +242,12 @@ ScaleData <- function(object, features = NULL, assay = "logcounts") {
     if (is.null(features)) {
         # all genes
         features <- rownames(object)
-    }
+    } 
 
     # mat <- t(logcounts(object))
-    mat <- Matrix::t(assay(object, assay))
+    mat <- Matrix::t(assay(object, assay)[features, ])
     m <- Matrix::rowMeans(mat)
-    s <- apply(mat, 1, function(x) stats::sd)
+    s <- apply(mat, 1, stats::sd)
     s[s == 0] <- 0.01
     SummarizedExperiment::assay(object, "scaled") <- t((mat - m) / s) 
     return(object)
