@@ -1,0 +1,54 @@
+# Cell type annotation 
+
+
+## Manual annotation
+
+Please refer to the [Cell cluster annotation](#manual-annotation) session. 
+
+
+## Automatic annotation
+
+
+### Run SingleR
+
+```{r}
+library(SingleR)
+
+hpca <- celldex::HumanPrimaryCellAtlasData()
+hpca
+res <- SingleR(test = assay(pbmc, "logcounts"), ref = hpca, labels = hpca$label.main)
+head(res)
+
+
+dice <- celldex::DatabaseImmuneCellExpressionData()
+res2 <- SingleR(test = assay(pbmc, "logcounts"), ref = dice, labels = dice$label.main)
+head(res2)
+```
+
+### Annotate with SingleR result
+
+```{r}
+pbmc[['hpca_label']] <- res$labels
+
+pbmc[['dice_label']] <- res2$labels
+```
+
+
+### Comparision with manual annotation result
+
+```{r annotation-comparison, fig.width=16, fig.height=6}
+x <- colData(pbmc)[, c("label", "hpca_label", "dice_label")]
+
+plot_list(
+    manual = sc_dim(pbmc, reduction="UMAP"),    
+    hpca = sc_dim(pbmc, reduction="UMAP", mapping=aes(color=hpca_label)),
+    dice = sc_dim(pbmc, reduction="UMAP", mapping=aes(color=dice_label)),
+    ncol = 3) & 
+sc_dim_geom_label(geom = ggrepel::geom_text_repel) & 
+theme(legend.position='inside')
+
+table(x[,c(1,2)])
+
+table(x[,c(1,3)])
+```
+

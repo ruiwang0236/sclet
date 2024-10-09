@@ -4,5 +4,6 @@ output_dir: docs
 delete_merged_file: true
 rmd_files: ["index.Rmd",
   "seurat-pbmc3k.Rmd",
+  "singleR.Rmd",
   "cci.Rmd",
   "svp.Rmd"]

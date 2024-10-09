@@ -8,7 +8,7 @@ knitr::opts_chunk$set(warning = FALSE,
                       message = TRUE)
 
 f <- "data/pbmc-3k-sce.qs"
-sce <- qs::qread(f)
+pbmc <- qs::qread(f)
 ```
 
 ## Read 10X data
@@ -17,31 +17,31 @@ sce <- qs::qread(f)
 library(sclet)
 
 dir <- "filtered_gene_bc_matrices/hg19"
-sce <- Read10X(dir)
+pbmc <- Read10X(dir)
 ```
 
 
 ## QC
 
 ```{r vlnplot-qc, fig.width=10, fig.height=7.5}
-# colData(sce)$percent.mt <- PercentageFeatureSet(sce, "^MT-")
-sce[["percent.mt"]] <- PercentageFeatureSet(sce, "^MT-")
-VlnPlot(sce, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"))
+# colData(pbmc)$percent.mt <- PercentageFeatureSet(pbmc, "^MT-")
+pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, "^MT-")
+VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"))
 ```
 
 
 ```{r}
-subset_feature(sce, 10)
-sce <- subset_feature(sce, mincell = 3, peek=FALSE)
+subset_feature(pbmc, 10)
+pbmc <- subset_feature(pbmc, mincell = 3, peek=FALSE)
 
-sce <- subset(sce, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5)
-sce
+pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5)
+pbmc
 ```
 
 
 ```{r featurescatter-qc, fig.width=10, fig.height=7.5}
-plot1 <- FeatureScatter(sce, feature1 = "nCount_RNA", feature2 = "percent.mt")
-plot2 <- FeatureScatter(sce, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt")
+plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
 
 library(aplot)
 plot_list(plot1, plot2)
@@ -52,10 +52,10 @@ Users can also use `plotColData()` to visualize the QC data.
 
 ```{r plotcoldata-qc, fig.width=10, fig.height=7.5}
 # VlnPlot-like
-p1 <- plotColData(sce, y = 'nCount_RNA')
+p1 <- plotColData(pbmc, y = 'nCount_RNA')
 
 # FeatureScatter-like
-p2 <- plotColData(sce, x = "nCount_RNA", y = "percent.mt")
+p2 <- plotColData(pbmc, x = "nCount_RNA", y = "percent.mt")
 plot_list(p1, p2)
 ```
 
@@ -64,40 +64,40 @@ plot_list(p1, p2)
 ## Variable features
 
 ```{r variablefeatureplot-pbmc, fig.width=10, fig.height=7.5}
-sce <- NormalizeData(sce)
-sce <- FindVariableFeatures(sce)
-top10 <- head(VariableFeatures(sce), 10)
+pbmc <- NormalizeData(pbmc)
+pbmc <- FindVariableFeatures(pbmc)
+top10 <- head(VariableFeatures(pbmc), 10)
 top10
-VariableFeaturePlot(sce, label = top10)
+VariableFeaturePlot(pbmc, label = top10)
 ```
 
 ## Dimensional reduction
 
 ```{r elbowplot-pbmc, fig.width=10, fig.height=7}
-sce <- ScaleData(sce)
-sce <- runPCA(sce, subset_row = VariableFeatures(sce), exprs_values = "scaled")
-ElbowPlot(sce)
+pbmc <- ScaleData(pbmc)
+pbmc <- runPCA(pbmc, subset_row = VariableFeatures(pbmc), exprs_values = "scaled")
+ElbowPlot(pbmc)
 ```
 
 ## Clustering {#FindClusters}
 
 ```{r}
 set.seed(2024-10-01)
-sce <- FindNeighbors(sce, dims = 1:10)
-sce <- FindClusters(sce)
+pbmc <- FindNeighbors(pbmc, dims = 1:10)
+pbmc <- FindClusters(pbmc)
 
-head(Idents(sce), 5)
+head(Idents(pbmc), 5)
 ```
 
 
 ## UMAP
 ```{r umap-pbmc, fig.width = 13, fig.height=7.5}
-sce <- RunUMAP(sce, 1:10)
+pbmc <- RunUMAP(pbmc, 1:10)
 
 library(ggsc)
 library(aplot)
-p1 <- sc_dim(sce, reduction="PCA")
-p2 <- sc_dim(sce, reduction="UMAP")
+p1 <- sc_dim(pbmc, reduction="PCA")
+p2 <- sc_dim(pbmc, reduction="UMAP")
 
 plot_list(gglist = list(PCA=p1, UMAP=p2))
 ```
@@ -106,13 +106,13 @@ plot_list(gglist = list(PCA=p1, UMAP=p2))
 
 ```{r}
 # find all markers of cluster 2
-cluster2.markers <- FindMarkers(sce, ident.1 = 2)
+cluster2.markers <- FindMarkers(pbmc, ident.1 = 2)
 head(cluster2.markers, n = 5)
 ```
 
 ```{r}
 # find all markers distinguishing cluster 5 from clusters 0 and 3
-cluster5.markers <- FindMarkers(sce, ident.1 = 5, ident.2 = c(0, 3))
+cluster5.markers <- FindMarkers(pbmc, ident.1 = 5, ident.2 = c(0, 3))
 head(cluster5.markers, n = 5)
 ```
 
@@ -120,7 +120,7 @@ head(cluster5.markers, n = 5)
 # find markers for every cluster compared to all remaining cells, 
 # report only the positive ones
 library(dplyr)
-pbmc.markers <- FindAllMarkers(sce, only.pos = TRUE)
+pbmc.markers <- FindAllMarkers(pbmc, only.pos = TRUE)
 
 topN_marker <- function(markers, n) {
     markers %>%
@@ -147,13 +147,13 @@ gene_table
 
 ![](figures/marker_gene_summary.png)
 
-## Cell cluster annotation
+## Cell cluster annotation {#manual-annotation}
 
 ```{r umap-pbmc-cell}
 new_labels <- c("CD8+ T","B","Memory CD4+","CD14+ Mono",
     "NK","FCGR3A+ Mono","Native CD4+ T","DC","Platelet")
-sce <- RenameIdents(sce, new_labels)
-sc_dim(sce, reduction="UMAP") + sc_dim_geom_label()
+pbmc <- RenameIdents(pbmc, new_labels)
+sc_dim(pbmc, reduction="UMAP") + sc_dim_geom_label()
 ```
 
 
