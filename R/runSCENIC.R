@@ -14,8 +14,6 @@
 #' 
 #' @importFrom SummarizedExperiment assay
 #' @importFrom SummarizedExperiment assayNames
-#' @importFrom 
-#' 
 #' @export 
 runSCENIC <- function(sce,species,nCores,dbDir,
                       assay_name = "logcounts",
@@ -28,41 +26,40 @@ runSCENIC <- function(sce,species,nCores,dbDir,
                 "mouse" = "mgi", 
                 "drosophila_melanogaster" = "dmel", 
                 stop("Unsupported species"))
-  data(defaultDbNames)
-  dbs <- defaultDbNames[[org]]
+  dbs <- SCENIC::defaultDbNames[[org]]
   
-  if(! "logcounts" %in% assayNames(sce)){
-    sce <- NormalizeData(sce)
+  if(! "logcounts" %in% SummarizedExperiment::assayNames(sce)){
+    sce <- Seurat::NormalizeData(sce)
   }
   
   # 构建scenicOptions对象
-  scenicOptions <- initializeScenic(org = org, dbDir = dbDir, dbs = dbs, nCores = nCores)
-  scenicOptions@inputDatasetInfo$cellInfo <- colData(sce)
+  scenicOptions <- SCENIC::initializeScenic(org = org, dbDir = dbDir, dbs = dbs, nCores = nCores)
+  scenicOptions@inputDatasetInfo$cellInfo <- SummarizedExperiment::colData(sce)
   
   # 过滤
-  exprMat = assay(sce, assay_name)
-  genesKept <- geneFiltering(exprMat, scenicOptions = scenicOptions,
-                             minCountsPerGene = minCountsPerGene * ncol(sce),
-                             minSamples = minSamples * ncol(sce)) 
+  exprMat = SummarizedExperiment::assay(sce, assay_name)
+  genesKept <- SCENIC::geneFiltering(exprMat, scenicOptions = scenicOptions,
+                                     minCountsPerGene = minCountsPerGene * ncol(sce),
+                                     minSamples = minSamples * ncol(sce)) 
   exprMat_filtered <- exprMat[genesKept, ]
   # 计算相关性
-  runCorrelation(exprMat_filtered, scenicOptions)
+  SCENIC::runCorrelation(exprMat_filtered, scenicOptions)
   
   # 运行GENIE3
   set.seed(123)
-  runGenie3(exprMat_filtered, scenicOptions)
+  SCENIC::runGenie3(exprMat_filtered, scenicOptions)
   
   # 构建GRN和打分
-  scenicOptions <- runSCENIC_1_coexNetwork2modules(scenicOptions)
-  scenicOptions <- runSCENIC_2_createRegulons(scenicOptions)
-  scenicOptions <- runSCENIC_3_scoreCells(scenicOptions, exprMat)
+  scenicOptions <- SCENIC::runSCENIC_1_coexNetwork2modules(scenicOptions)
+  scenicOptions <- SCENIC::runSCENIC_2_createRegulons(scenicOptions)
+  scenicOptions <- SCENIC::runSCENIC_3_scoreCells(scenicOptions, exprMat)
   
   # 读取第三步打分结果
   regulonAUC <- readRDS('int/3.4_regulonAUC.Rds')
-  regulonAUC <- regulonAUC[onlyNonDuplicatedExtended(rownames(regulonAUC)),]
+  regulonAUC <- regulonAUC[SCENIC::onlyNonDuplicatedExtended(rownames(regulonAUC)),]
   
   # 获得regulon打分矩阵
-  regAct <- getAUC(regulonAUC)
+  regAct <- AUCell::getAUC(regulonAUC)
   
   return(regAct)
 }

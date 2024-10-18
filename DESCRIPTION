@@ -30,8 +30,10 @@ Imports:
     SingleCellExperiment,
     SummarizedExperiment
 Suggests:
+    AUCell,
     CellChat,
     ggsc,
+    SCENIC,
     Seurat
 License: Artistic-2.0
 Encoding: UTF-8
