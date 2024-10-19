@@ -53,14 +53,7 @@ runSCENIC <- function(sce,species,nCores,dbDir,
   scenicOptions <- SCENIC::runSCENIC_1_coexNetwork2modules(scenicOptions)
   scenicOptions <- SCENIC::runSCENIC_2_createRegulons(scenicOptions)
   scenicOptions <- SCENIC::runSCENIC_3_scoreCells(scenicOptions, exprMat)
-  
-  # 读取第三步打分结果
-  regulonAUC <- readRDS('int/3.4_regulonAUC.Rds')
-  regulonAUC <- regulonAUC[SCENIC::onlyNonDuplicatedExtended(rownames(regulonAUC)),]
-  
-  # 获得regulon打分矩阵
-  regAct <- AUCell::getAUC(regulonAUC)
-  
-  return(regAct)
+ 
+  return(scenicOptions)
 }
 
